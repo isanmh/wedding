@@ -1132,7 +1132,7 @@
                     Bank BCA
                   </h4>
                   <p class="text-xs text-gray-500 mb-0 font-body">
-                    a.n Ihsan Miftahul Huda
+                    a.n IHSAN MIFTAHUL HUDA
                   </p>
                 </div>
               </div>
@@ -1190,7 +1190,7 @@
                     Bank BCA
                   </h4>
                   <p class="text-xs text-gray-500 mb-0 font-body">
-                    a.n Ai Liana Nuraeni
+                    a.n AI LIANA NURAENI
                   </p>
                 </div>
               </div>
@@ -1200,7 +1200,7 @@
                 <span
                   id="rek2"
                   class="font-bold text-navy tracking-wider font-mono text-sm order-2 md:order-1"
-                  >9012345678</span
+                  >1093162114</span
                 >
                 <button
                   onclick="copyText('rek2')"
@@ -1229,8 +1229,7 @@
                   id="alamat-kado"
                   class="text-xs text-navy font-semibold mb-3 leading-relaxed"
                 >
-                  Kp. Salebu, RT 01/02, Desa Salebu, Kec. Mangunreja, Kab.
-                  Tasikmalaya, Jawa Barat
+                  Kp Bojong Rt24 Rw3 Salebu Kp, Jalan Bojong, RT.24/RW.3, Ds Salebu, Kec Mangunreja, Kab Tasikmalaya
                 </p>
               </div>
               <button
@@ -1313,7 +1312,7 @@
                 required
                 class="w-full px-4 py-3 bg-blue-50/30 border border-blue-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition appearance-none cursor-pointer"
               >
-                <option value="" disabled selected>
+                <option value="0" disabled selected>
                   Pilih jumlah tamu...
                 </option>
                 <option value="1">1 Orang</option>
@@ -2054,6 +2053,29 @@
 
           // (love feature removed)
         }
+      }
+
+      // Disable "Jumlah Tamu" jika kehadiran selain "Hadir"
+      const kehadiranSelect = document.getElementById("kehadiran");
+      const jumlahTamuSelect = document.getElementById("jumlah-tamu");
+
+      function toggleJumlahTamu() {
+        if (kehadiranSelect.value === "Hadir" || kehadiranSelect.value === "Masih Belum Pasti") {
+          jumlahTamuSelect.disabled = false;
+          jumlahTamuSelect.classList.remove(
+            "opacity-50",
+            "cursor-not-allowed",
+          );
+        } else {
+          jumlahTamuSelect.disabled = true;
+          jumlahTamuSelect.value = "0";
+          jumlahTamuSelect.classList.add("opacity-50", "cursor-not-allowed");
+        }
+      }
+
+      if (kehadiranSelect && jumlahTamuSelect) {
+        kehadiranSelect.addEventListener("change", toggleJumlahTamu);
+        toggleJumlahTamu(); // set state awal saat halaman dimuat
       }
 
       document
