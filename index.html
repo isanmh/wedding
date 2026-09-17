@@ -13,7 +13,6 @@
       src="nadin.mp3"
       preload="auto"
       loop
-      muted
       autoplay
       class="hidden"
     ></audio>
@@ -1509,13 +1508,6 @@
           ? guestName
           : "Tamu Undangan";
 
-        const bgAudio = document.getElementById("audio-player");
-        if (bgAudio) {
-          bgAudio.volume = 0.45;
-          bgAudio.muted = true;
-          bgAudio.play().catch(() => {});
-        }
-
         createLeaves();
         setupGalleryCarousel();
         initModalGallery();
@@ -1887,35 +1879,16 @@
 
       window.toggleAudio = function () {
         const icon = document.getElementById("audio-icon");
-        const bgAudio = document.getElementById("audio-player");
-
-        if (bgAudio) {
-          if (bgAudio.muted) {
-            bgAudio.muted = false;
-            bgAudio.volume = 0.45;
-            bgAudio.play().catch(() => {});
-            icon.classList.remove("ph-speaker-slash");
-            icon.classList.add("animate-spin-slow", "ph-music-notes");
-            window.isPlaying = true;
-          } else {
-            bgAudio.muted = true;
-            bgAudio.pause();
-            icon.classList.remove("animate-spin-slow", "ph-music-notes");
-            icon.classList.add("ph-speaker-slash");
-            window.isPlaying = false;
-          }
-          return;
-        }
-
-        if (!player || typeof player.playVideo !== "function") return;
+        const audioPlayer = document.getElementById("audio-player");
+        if (!audioPlayer) return;
 
         if (window.isPlaying) {
-          player.pauseVideo();
+          audioPlayer.pause();
           icon.classList.remove("animate-spin-slow", "ph-music-notes");
           icon.classList.add("ph-speaker-slash");
           window.isPlaying = false;
         } else {
-          player.playVideo();
+          audioPlayer.play();
           icon.classList.remove("ph-speaker-slash");
           icon.classList.add("animate-spin-slow", "ph-music-notes");
           window.isPlaying = true;
