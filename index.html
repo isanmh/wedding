@@ -269,6 +269,17 @@
         background-color: #b3e5fc !important;
       }
 
+      /* Bank card hover effect */
+      .bank-card {
+        transition:
+          transform 0.35s ease,
+          box-shadow 0.35s ease;
+      }
+      .bank-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 26px 55px rgba(30, 41, 59, 0.26) !important;
+      }
+
       /* Video wrapper: default 16:9, switch to 9:16 (short) on small screens */
       .video-wrapper {
         position: relative;
@@ -1098,116 +1109,238 @@
           >
             <!-- BCA -->
             <div
-              class="gift-card p-6 rounded-2xl shadow-[0_15px_30px_rgba(74,143,199,0.15)] border border-blue-100 text-left transition-transform"
-              style="background: white"
+              class="bank-card relative overflow-hidden rounded-[26px] p-5 md:p-6 shadow-[0_20px_45px_rgba(30,41,59,0.18)] border border-white/60 text-left transition-transform min-h-[210px] flex flex-col justify-between"
+              style="background: linear-gradient(135deg, #f5f7f9 0%, #e6e9ed 45%, #f0f2f5 100%)"
             >
-              <div class="flex items-start gap-4 mb-3">
-                <div
-                  class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 flex-shrink-0"
-                >
-                  <svg
-                    width="36"
+              <!-- dekorasi diagonal -->
+              <div
+                class="absolute -right-16 -top-16 w-64 h-64 bg-gradient-to-br from-gray-300/50 to-transparent rotate-45 rounded-3xl pointer-events-none"
+              ></div>
+              <div
+                class="absolute right-0 bottom-0 w-28 h-28 pointer-events-none"
+                style="
+                  background-image: radial-gradient(
+                    rgba(100, 116, 139, 0.35) 1px,
+                    transparent 1px
+                  );
+                  background-size: 7px 7px;
+                  -webkit-mask-image: linear-gradient(
+                    to top left,
+                    black 20%,
+                    transparent 70%
+                  );
+                  mask-image: linear-gradient(
+                    to top left,
+                    black 20%,
+                    transparent 70%
+                  );
+                "
+              ></div>
+
+              <!-- baris atas: chip & logo bank -->
+              <div class="relative z-10 flex items-start justify-between">
+                <svg width="46" height="36" viewBox="0 0 48 38" fill="none">
+                  <defs>
+                    <linearGradient
+                      id="chipGrad1"
+                      x1="0"
+                      y1="0"
+                      x2="48"
+                      y2="38"
+                    >
+                      <stop stop-color="#f7e8b0" />
+                      <stop offset="0.5" stop-color="#d4af5a" />
+                      <stop offset="1" stop-color="#b8860b" />
+                    </linearGradient>
+                  </defs>
+                  <rect
+                    x="1"
+                    y="1"
+                    width="46"
                     height="36"
-                    viewBox="0 0 48 48"
+                    rx="8"
+                    fill="url(#chipGrad1)"
+                    stroke="#a97a1f"
+                    stroke-width="1"
+                  />
+                  <line x1="16" y1="1" x2="16" y2="37" stroke="#a97a1f" />
+                  <line x1="32" y1="1" x2="32" y2="37" stroke="#a97a1f" />
+                  <line x1="1" y1="12" x2="47" y2="12" stroke="#a97a1f" />
+                  <line x1="1" y1="25" x2="47" y2="25" stroke="#a97a1f" />
+                  <path
+                    d="M16 12 Q24 19 32 12"
+                    stroke="#a97a1f"
                     fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                  />
+                  <path
+                    d="M16 25 Q24 18 32 25"
+                    stroke="#a97a1f"
+                    fill="none"
+                  />
+                </svg>
+                <div class="flex items-center gap-1.5">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
                     aria-hidden="true"
                   >
-                    <circle cx="24" cy="24" r="24" fill="#0033A0" />
-                    <text
-                      x="24"
-                      y="30"
-                      text-anchor="middle"
-                      fill="#ffffff"
-                      font-size="14"
-                      font-family="Plus Jakarta Sans, Arial, sans-serif"
-                      font-weight="700"
-                    >
-                      BCA
-                    </text>
+                    <path
+                      d="M12 2.5L4.5 5.5V11c0 5 3.2 8.7 7.5 10.5 4.3-1.8 7.5-5.5 7.5-10.5V5.5L12 2.5z"
+                      stroke="#153e75"
+                      stroke-width="1.4"
+                    />
                   </svg>
-                </div>
-                <div>
-                  <h4 class="font-serif font-bold text-xl text-navy mb-1">
-                    Bank BCA
-                  </h4>
-                  <p class="text-xs text-gray-500 mb-0 font-body">
-                    a.n IHSAN MIFTAHUL HUDA
-                  </p>
+                  <span
+                    class="font-black italic text-xl md:text-2xl text-[#153e75] tracking-tight"
+                    >BCA</span
+                  >
                 </div>
               </div>
+
+              <!-- baris bawah: nama, nomor rekening & tombol copy -->
               <div
-                class="bg-blue-50/50 p-3 rounded-xl flex flex-col md:flex-row md:justify-between md:items-center gap-2 mt-4 border border-blue-100"
+                class="relative z-10 flex items-end justify-between gap-3 mt-8"
               >
-                <span
-                  id="rek1"
-                  class="font-bold text-navy tracking-wider font-mono text-sm order-2 md:order-1"
-                  >2832362752</span
-                >
+                <div class="min-w-0">
+                  <p
+                    class="font-bold text-gray-800 text-sm md:text-base mb-1 truncate"
+                  >
+                    IHSAN MIFTAHUL HUDA
+                  </p>
+                  <p
+                    id="rek1"
+                    class="font-extrabold text-gray-900 text-lg md:text-2xl tracking-wide font-mono"
+                  >
+                    2832362752
+                  </p>
+                </div>
                 <button
                   onclick="copyText('rek1')"
-                  class="text-blue-700 hover:text-white hover:bg-blue-600 text-xs font-semibold flex items-center justify-center gap-1 bg-white px-2.5 py-1.5 rounded-lg border border-blue-200 transition-all shadow-sm w-full md:w-auto order-1 md:order-2"
+                  class="flex-shrink-0 flex items-center gap-1.5 bg-gray-900 hover:bg-gray-700 text-white text-xs md:text-sm font-semibold px-3.5 py-2.5 rounded-xl transition-all shadow-md"
                   aria-label="Salin nomor BCA"
                 >
-                  <i class="ph-bold ph-copy"></i> Salin
+                  <i class="ph-bold ph-copy-simple text-base"></i> Copy
                 </button>
               </div>
             </div>
 
             <!-- SEA BANK -> BCA for Ai Liana (logo added) -->
             <div
-              class="gift-card p-6 rounded-2xl shadow-[0_15px_30px_rgba(74,143,199,0.15)] border border-blue-100 text-left transition-transform"
-              style="background: white"
+              class="bank-card relative overflow-hidden rounded-[26px] p-5 md:p-6 shadow-[0_20px_45px_rgba(30,41,59,0.18)] border border-white/60 text-left transition-transform min-h-[210px] flex flex-col justify-between"
+              style="background: linear-gradient(135deg, #f5f7f9 0%, #e6e9ed 45%, #f0f2f5 100%)"
             >
-              <div class="flex items-start gap-4 mb-3">
-                <div
-                  class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 flex-shrink-0"
-                >
-                  <svg
-                    width="36"
+              <!-- dekorasi diagonal -->
+              <div
+                class="absolute -right-16 -top-16 w-64 h-64 bg-gradient-to-br from-gray-300/50 to-transparent rotate-45 rounded-3xl pointer-events-none"
+              ></div>
+              <div
+                class="absolute right-0 bottom-0 w-28 h-28 pointer-events-none"
+                style="
+                  background-image: radial-gradient(
+                    rgba(100, 116, 139, 0.35) 1px,
+                    transparent 1px
+                  );
+                  background-size: 7px 7px;
+                  -webkit-mask-image: linear-gradient(
+                    to top left,
+                    black 20%,
+                    transparent 70%
+                  );
+                  mask-image: linear-gradient(
+                    to top left,
+                    black 20%,
+                    transparent 70%
+                  );
+                "
+              ></div>
+
+              <!-- baris atas: chip & logo bank -->
+              <div class="relative z-10 flex items-start justify-between">
+                <svg width="46" height="36" viewBox="0 0 48 38" fill="none">
+                  <defs>
+                    <linearGradient
+                      id="chipGrad2"
+                      x1="0"
+                      y1="0"
+                      x2="48"
+                      y2="38"
+                    >
+                      <stop stop-color="#f7e8b0" />
+                      <stop offset="0.5" stop-color="#d4af5a" />
+                      <stop offset="1" stop-color="#b8860b" />
+                    </linearGradient>
+                  </defs>
+                  <rect
+                    x="1"
+                    y="1"
+                    width="46"
                     height="36"
-                    viewBox="0 0 48 48"
+                    rx="8"
+                    fill="url(#chipGrad2)"
+                    stroke="#a97a1f"
+                    stroke-width="1"
+                  />
+                  <line x1="16" y1="1" x2="16" y2="37" stroke="#a97a1f" />
+                  <line x1="32" y1="1" x2="32" y2="37" stroke="#a97a1f" />
+                  <line x1="1" y1="12" x2="47" y2="12" stroke="#a97a1f" />
+                  <line x1="1" y1="25" x2="47" y2="25" stroke="#a97a1f" />
+                  <path
+                    d="M16 12 Q24 19 32 12"
+                    stroke="#a97a1f"
                     fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                  />
+                  <path
+                    d="M16 25 Q24 18 32 25"
+                    stroke="#a97a1f"
+                    fill="none"
+                  />
+                </svg>
+                <div class="flex items-center gap-1.5">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
                     aria-hidden="true"
                   >
-                    <circle cx="24" cy="24" r="24" fill="#0033A0" />
-                    <text
-                      x="24"
-                      y="30"
-                      text-anchor="middle"
-                      fill="#ffffff"
-                      font-size="14"
-                      font-family="Plus Jakarta Sans, Arial, sans-serif"
-                      font-weight="700"
-                    >
-                      BCA
-                    </text>
+                    <path
+                      d="M12 2.5L4.5 5.5V11c0 5 3.2 8.7 7.5 10.5 4.3-1.8 7.5-5.5 7.5-10.5V5.5L12 2.5z"
+                      stroke="#153e75"
+                      stroke-width="1.4"
+                    />
                   </svg>
-                </div>
-                <div>
-                  <h4 class="font-serif font-bold text-xl text-navy mb-1">
-                    Bank BCA
-                  </h4>
-                  <p class="text-xs text-gray-500 mb-0 font-body">
-                    a.n AI LIANA NURAENI
-                  </p>
+                  <span
+                    class="font-black italic text-xl md:text-2xl text-[#153e75] tracking-tight"
+                    >BCA</span
+                  >
                 </div>
               </div>
+
+              <!-- baris bawah: nama, nomor rekening & tombol copy -->
               <div
-                class="bg-blue-50/50 p-3 rounded-xl flex flex-col md:flex-row md:justify-between md:items-center gap-2 mt-4 border border-blue-100"
+                class="relative z-10 flex items-end justify-between gap-3 mt-8"
               >
-                <span
-                  id="rek2"
-                  class="font-bold text-navy tracking-wider font-mono text-sm order-2 md:order-1"
-                  >1093162114</span
-                >
+                <div class="min-w-0">
+                  <p
+                    class="font-bold text-gray-800 text-sm md:text-base mb-1 truncate"
+                  >
+                    AI LIANA NURAENI
+                  </p>
+                  <p
+                    id="rek2"
+                    class="font-extrabold text-gray-900 text-lg md:text-2xl tracking-wide font-mono"
+                  >
+                    1093162114
+                  </p>
+                </div>
                 <button
                   onclick="copyText('rek2')"
-                  class="text-blue-700 hover:text-white hover:bg-blue-600 text-xs font-semibold flex items-center justify-center gap-1 bg-white px-2.5 py-1.5 rounded-lg border border-blue-200 transition-all shadow-sm w-full md:w-auto order-1 md:order-2"
+                  class="flex-shrink-0 flex items-center gap-1.5 bg-gray-900 hover:bg-gray-700 text-white text-xs md:text-sm font-semibold px-3.5 py-2.5 rounded-xl transition-all shadow-md"
                   aria-label="Salin nomor BCA Ai Liana"
                 >
-                  <i class="ph-bold ph-copy"></i> Salin
+                  <i class="ph-bold ph-copy-simple text-base"></i> Copy
                 </button>
               </div>
             </div>
@@ -1942,7 +2075,7 @@
       // Client-side pagination for Ucapan Masuk
       let messagesData = [];
       let currentPage = 1;
-      const PAGE_SIZE = 5; // messages per page
+      const PAGE_SIZE = 10; // messages per page
 
       async function loadMessages() {
         const messagesList = document.getElementById("messages-list");
