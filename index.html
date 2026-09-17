@@ -312,13 +312,41 @@
         // phase 1: fade inner cover content
         cover.classList.add("cover-exit-start");
 
+        // aktifkan sound background otomatis (memakai gesture klik user)
+        const audioPlayer = document.getElementById("audio-player");
+        const audioIcon = document.getElementById("audio-icon");
+        if (audioPlayer) {
+          audioPlayer
+            .play()
+            .then(() => {
+              window.isPlaying = true;
+              if (audioIcon) {
+                audioIcon.classList.remove("ph-speaker-slash");
+                audioIcon.classList.add(
+                  "animate-spin-slow",
+                  "ph-music-notes",
+                );
+              }
+            })
+            .catch(() => {
+              // autoplay diblokir browser, user bisa aktifkan manual lewat tombol audio
+              window.isPlaying = false;
+              if (audioIcon) {
+                audioIcon.classList.remove(
+                  "animate-spin-slow",
+                  "ph-music-notes",
+                );
+                audioIcon.classList.add("ph-speaker-slash");
+              }
+            });
+        }
+
         if (
           typeof player !== "undefined" &&
           player &&
           typeof player.playVideo === "function"
         ) {
           player.playVideo();
-          window.isPlaying = true;
         }
 
         const hideCover = () => {
