@@ -1358,6 +1358,9 @@
             >
               <i class="ph-fill ph-chats-circle text-blue-600"></i> Ucapan Masuk
             </h3>
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-sm text-gray-500">Daftar ucapan pengunjung</div>
+            </div>
             <div
               id="messages-list"
               class="max-h-[350px] overflow-y-auto pr-2 space-y-4"
@@ -1366,6 +1369,7 @@
                 Memuat ucapan...
               </p>
             </div>
+            <div id="messages-pagination" class="text-sm mt-3"></div>
           </div>
         </div>
       </section>
@@ -1936,46 +1940,151 @@
         }
       }
 
+      // Client-side pagination for Ucapan Masuk
+      let messagesData = [];
+      let currentPage = 1;
+      const PAGE_SIZE = 5; // messages per page
+
       async function loadMessages() {
         const messagesList = document.getElementById("messages-list");
+        const paginationWrap = document.getElementById("messages-pagination");
         if (!GAS_URL || GAS_URL.includes("MASUKKAN_URL")) {
           messagesList.innerHTML =
             '<p class="text-center text-gray-400 text-sm italic py-4">Database ucapan belum terhubung.</p>';
+          if (paginationWrap) paginationWrap.innerHTML = "";
           return;
         }
+
         try {
           const response = await fetch(GAS_URL);
           const result = await response.json();
-          if (result.status === "success" && result.data.length > 0) {
-            messagesList.innerHTML = "";
-            result.data.forEach((msg) => {
-              const dateObj = new Date(msg.timestamp);
-              const dateStr = `${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`;
-              const badgeColor =
-                msg.kehadiran === "Hadir"
-                  ? "bg-blue-100 text-blue-700 border-blue-200"
-                  : "bg-red-50 text-red-600 border-red-100";
-                const jumlahTamuLabel = msg.jumlah_tamu || msg.jumlahTamu || "-";
-
-              const html = `
-                            <div class="bg-blue-50/40 p-4 rounded-2xl border border-blue-100/50 shadow-sm">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="font-serif font-bold text-navy text-[15px]">${msg.nama}</span>
-                          <div class="flex items-center gap-2">
-                            <span class="text-[10px] px-2.5 py-1 rounded-full font-bold border ${badgeColor}">${msg.kehadiran}</span>
-                            <span class="text-[10px] px-2.5 py-1 rounded-full font-bold border bg-blue-50 text-blue-700 border-blue-200">${jumlahTamuLabel}</span>
-                          </div>
-                                </div>
-                                <p class="text-600 text-sm mb-3 leading-relaxed font-light text-gray-600">${msg.ucapan}</p>
-                                <span class="text-[10px] text-gray-400 flex items-center gap-1"><i class="ph-fill ph-clock"></i> ${dateStr}</span>
-                            </div>
-                        `;
-              messagesList.insertAdjacentHTML("beforeend", html);
-            });
+          if (result.status === "success" && Array.isArray(result.data)) {
+            // store newest-first
+            messagesData = result.data.slice().reverse();
+            renderMessagesPage(1);
+          } else {
+            messagesData = [];
+            messagesList.innerHTML =
+              '<p class="text-center text-gray-400 text-sm py-4">Belum ada ucapan.</p>';
+            if (paginationWrap) paginationWrap.innerHTML = "";
           }
         } catch (error) {
           messagesList.innerHTML =
             '<p class="text-center text-red-400 text-sm py-4">Gagal memuat daftar ucapan.</p>';
+          if (paginationWrap) paginationWrap.innerHTML = "";
+          console.error(error);
+        }
+      }
+
+      function renderMessagesPage(page) {
+        const messagesList = document.getElementById("messages-list");
+        const paginationWrap = document.getElementById("messages-pagination");
+        const total = messagesData.length;
+        const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+        currentPage = Math.min(Math.max(1, page), totalPages);
+
+        const start = (currentPage - 1) * PAGE_SIZE;
+        const slice = messagesData.slice(start, start + PAGE_SIZE);
+
+        if (!slice.length) {
+          messagesList.innerHTML =
+            '<p class="text-center text-gray-400 text-sm py-4">Belum ada ucapan.</p>';
+        } else {
+          messagesList.innerHTML = "";
+          slice.forEach((msg) => {
+            const dateObj = msg.timestamp ? new Date(msg.timestamp) : new Date();
+            const dateStr = `${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`;
+            const badgeColor =
+              (msg.kehadiran || "").toLowerCase() === "hadir"
+                ? "bg-blue-100 text-blue-700 border-blue-200"
+                : "bg-red-50 text-red-600 border-red-100";
+            const jumlahTamuLabel = msg.jumlah_tamu || msg.jumlahTamu || "-";
+
+            const msgId = msg.id || msg.timestamp || btoa((msg.nama||"")+"|"+(msg.ucapan||"")+"|"+(msg.timestamp||Date.now()));
+            const loveCount = Number(msg.love || msg.loves || msg.likes || 0);
+
+            const html = `
+              <div class="bg-blue-50/40 p-4 rounded-2xl border border-blue-100/50 shadow-sm">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-serif font-bold text-navy text-[15px]">${msg.nama || "-"}</span>
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] px-2.5 py-1 rounded-full font-bold border ${badgeColor}">${msg.kehadiran || "-"}</span>
+                    <span class="text-[10px] px-2.5 py-1 rounded-full font-bold border bg-blue-50 text-blue-700 border-blue-200">${jumlahTamuLabel}</span>
+                  </div>
+                </div>
+                <p class="text-600 text-sm mb-3 leading-relaxed font-light text-gray-600">${msg.ucapan || ""}</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] text-gray-400 flex items-center gap-1"><i class="ph-fill ph-clock"></i> ${dateStr}</span>
+                  <button data-id="${msgId}" class="btn-love inline-flex items-center gap-2 text-sm text-gray-600 hover:text-red-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.657l-6.828-6.828a4 4 0 010-5.657z"/></svg>
+                    <span class="love-count">${loveCount}</span>
+                  </button>
+                </div>
+              </div>
+            `;
+
+            messagesList.insertAdjacentHTML("beforeend", html);
+          });
+        }
+
+        // update pagination controls (Prev / page numbers / Next)
+        if (paginationWrap) {
+          const prevDisabled = currentPage <= 1;
+          const nextDisabled = currentPage >= totalPages;
+
+          const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
+            .map(
+              (p) =>
+                `<button class="msg-page px-2 py-1 rounded ${
+                  p === currentPage ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"
+                }" data-page="${p}">${p}</button>`,
+            )
+            .join(" ");
+
+          paginationWrap.innerHTML = `
+            <div class="flex items-center gap-2">
+              <button id="msg-prev" class="px-2 py-1 rounded bg-gray-100 ${prevDisabled ? "opacity-50" : ""}">Prev</button>
+              <div class="flex items-center gap-1">${pages}</div>
+              <button id="msg-next" class="px-2 py-1 rounded bg-gray-100 ${nextDisabled ? "opacity-50" : ""}">Next</button>
+            </div>
+          `;
+
+          const prevBtn = document.getElementById("msg-prev");
+          const nextBtn = document.getElementById("msg-next");
+          if (prevBtn) prevBtn.onclick = () => renderMessagesPage(currentPage - 1);
+          if (nextBtn) nextBtn.onclick = () => renderMessagesPage(currentPage + 1);
+
+          // wire page number buttons
+          document.querySelectorAll(".msg-page").forEach((btn) => {
+            btn.onclick = () => renderMessagesPage(Number(btn.dataset.page));
+          });
+
+          // attach love handlers for rendered items
+          messagesList.querySelectorAll('.btn-love').forEach((btn) => {
+            btn.onclick = async () => {
+              const id = btn.dataset.id;
+              const key = `loved_${id}`;
+              if (localStorage.getItem(key)) return; // prevent double-love locally
+
+              const countSpan = btn.querySelector('.love-count');
+              let count = Number(countSpan.innerText) || 0;
+              count += 1;
+              countSpan.innerText = count;
+              btn.classList.add('text-red-500');
+              localStorage.setItem(key, '1');
+
+              // best-effort: notify server to persist love (server must support this action)
+              try {
+                await fetch(GAS_URL, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ action: 'love', id }),
+                });
+              } catch (err) {
+                console.warn('Failed to send love to server', err);
+              }
+            };
+          });
         }
       }
 
