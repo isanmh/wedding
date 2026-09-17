@@ -554,7 +554,7 @@
         <div
           class="max-w-3xl mx-auto text-center fade-up bg-white/90 backdrop-blur-sm p-8 md:p-12 rounded-3xl shadow-[0_15px_40px_rgba(74,143,199,0.15)] border border-blue-100"
           data-aos="fade-up"
-          data-aos-duration="700"
+          data-aos-duration="500"
           data-aos-anchor-placement="top-center"
         >
           <i
@@ -1033,9 +1033,8 @@
             >
               <iframe
                 class="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube-nocookie.com/embed/XtCInYeEGtM?si=vBOe_akcoy5OYVLk"
+                src="https://youtube.com/embed/UKbV22Zm10c?si=Z6OIrSPLZz79L9wM&autoplay=1&mute=1&rel=0"
                 title="YouTube video player"
-                autoplay
                 frameborder="0"
                 allow="
                   accelerometer;
@@ -1838,10 +1837,22 @@
           width: "10",
           videoId: YOUTUBE_VIDEO_ID,
           playerVars: {
-            autoplay: 0,
+            autoplay: 1,
             controls: 0,
             loop: 1,
             playlist: YOUTUBE_VIDEO_ID,
+          },
+          events: {
+            onReady: function (event) {
+              try {
+                // mute so autoplay is allowed in most browsers
+                event.target.mute();
+                event.target.playVideo();
+                window.isPlaying = true;
+              } catch (e) {
+                // ignore
+              }
+            },
           },
         });
       }
