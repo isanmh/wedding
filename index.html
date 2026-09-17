@@ -266,6 +266,23 @@
         ) !important;
         background-color: #b3e5fc !important;
       }
+
+      /* Video wrapper: default 16:9, switch to 9:16 (short) on small screens */
+      .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 */
+        overflow: hidden;
+      }
+
+      @media (max-width: 640px) {
+        .video-wrapper {
+          padding-bottom: 177.78%; /* 9:16 portrait for short look */
+          max-width: 420px;
+          margin-left: auto;
+          margin-right: auto;
+          border-radius: 18px;
+        }
+      }
     </style>
 
     <script>
@@ -1028,12 +1045,13 @@
 
           <div class="relative w-full max-w-3xl mx-auto">
             <div
-              class="relative bg-white rounded-3xl shadow-[0_15px_40px_rgba(34,87,122,0.2)] overflow-hidden border border-blue-100"
-              style="padding-bottom: 56.25%"
+              class="relative bg-white rounded-3xl shadow-[0_15px_40px_rgba(34,87,122,0.2)] overflow-hidden border border-blue-100 video-wrapper"
             >
               <iframe
-                class="absolute top-0 left-0 w-full h-full"
-                src="https://youtube.com/embed/UKbV22Zm10c?si=Z6OIrSPLZz79L9wM&autoplay=1&mute=1&rel=0"
+                id="video-embed"
+                class="absolute"
+                style="top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:auto;height:auto;"
+                src="https://youtube.com/embed/UKbV22Zm10c?si=Z6OIrSPLZz79L9wM&autoplay=1&mute=1&rel=0&loop=1&playlist=UKbV22Zm10c"
                 title="YouTube video player"
                 frameborder="0"
                 allow="
