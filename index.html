@@ -364,6 +364,12 @@
         class="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 800%22><defs><filter id=%22bloom%22><feGaussianBlur in=%22SourceGraphic%22 stdDeviation=%223%22/></filter></defs><circle cx=%2250%25%22 cy=%2220%25%22 r=%22200%22 fill=%224a8fc7%22 opacity=%220.2%22 filter=%22url(%23bloom)%22/><circle cx=%2290%25%22 cy=%2280%25%22 r=%22250%22 fill=%224a8fc7%22 opacity=%220.15%22 filter=%22url(%23bloom)%22/></svg>')] bg-cover bg-center"
       ></div>
 
+      <!-- DAUN BERJATUHAN DI COVER -->
+      <div
+        id="cover-leaves-container"
+        class="absolute inset-0 pointer-events-none overflow-hidden z-[12]"
+      ></div>
+
       <!-- ORNAMENTAL CHERRY BLOSSOMS - TOP -->
       <div
         class="absolute top-0 left-0 w-full h-32 pointer-events-none z-10 opacity-40"
@@ -1667,7 +1673,8 @@
           ? guestName
           : "Tamu Undangan";
 
-        createLeaves();
+        createLeaves("leaves-container");
+        createLeaves("cover-leaves-container", window.innerWidth > 768 ? 16 : 9);
         setupGalleryCarousel();
         initModalGallery();
         if (window.AOS && typeof AOS.init === "function") {
@@ -2054,9 +2061,11 @@
         }
       };
 
-      function createLeaves() {
-        const container = document.getElementById("leaves-container");
-        const leafCount = window.innerWidth > 768 ? 22 : 12;
+      function createLeaves(containerId = "leaves-container", countOverride) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const leafCount =
+          countOverride ?? (window.innerWidth > 768 ? 22 : 12);
 
         for (let i = 0; i < leafCount; i++) {
           const leaf = document.createElement("div");
