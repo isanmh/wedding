@@ -600,7 +600,7 @@
           </h2>
 
           <p
-            class="font-body text-sm md:text-base text-gray-700 mb-12 leading-relaxed max-w-2xl mx-auto bg-white/50 p-4 rounded-xl shadow-[0_5px_20px_rgba(74,143,199,0.1)]"
+            class="font-body text-sm md:text-base text-gray-700 mt-12 mb-12 leading-relaxed max-w-2xl mx-auto bg-white/50 p-4 rounded-xl shadow-[0_5px_20px_rgba(74,143,199,0.1)]"
           >
             Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta'ala, kami
             bermaksud menyelenggarakan acara pernikahan kami:
@@ -1123,7 +1123,7 @@
                 <span
                   id="rek1"
                   class="font-bold text-navy tracking-wider font-mono text-sm order-2 md:order-1"
-                  >1234567890</span
+                  >2832362752</span
                 >
                 <button
                   onclick="copyText('rek1')"
@@ -1193,69 +1193,6 @@
               </div>
             </div>
 
-            <!-- DANA (label updated with logo) -->
-            <div
-              class="gift-card p-6 rounded-2xl shadow-[0_15px_30px_rgba(74,143,199,0.15)] border border-blue-100 text-left transition-transform"
-              style="background: white"
-            >
-              <div class="flex items-start gap-4 mb-3">
-                <div
-                  class="w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex-shrink-0"
-                >
-                  <svg
-                    width="36"
-                    height="36"
-                    viewBox="0 0 48 48"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <defs>
-                      <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#2DA3FF" />
-                        <stop offset="100%" stop-color="#0066FF" />
-                      </linearGradient>
-                    </defs>
-                    <circle cx="24" cy="24" r="24" fill="url(#g1)" />
-                    <text
-                      x="24"
-                      y="29"
-                      text-anchor="middle"
-                      fill="#ffffff"
-                      font-size="12"
-                      font-family="Plus Jakarta Sans, Arial, sans-serif"
-                      font-weight="700"
-                    >
-                      DANA
-                    </text>
-                  </svg>
-                </div>
-                <div>
-                  <h4 class="font-serif font-bold text-xl text-navy mb-1">
-                    Dana
-                  </h4>
-                  <p class="text-xs text-gray-500 mb-0 font-body">
-                    a.n Ihsan Miftahul Huda
-                  </p>
-                </div>
-              </div>
-              <div
-                class="bg-blue-50/50 p-3 rounded-xl flex flex-col md:flex-row md:justify-between md:items-center gap-2 mt-4 border border-blue-100"
-              >
-                <span
-                  id="rek3"
-                  class="font-bold text-navy tracking-wider font-mono text-sm order-2 md:order-1"
-                  >081234567890</span
-                >
-                <button
-                  onclick="copyText('rek3')"
-                  class="text-blue-700 hover:text-white hover:bg-blue-600 text-xs font-semibold flex items-center justify-center gap-1 bg-white px-2.5 py-1.5 rounded-lg border border-blue-200 transition-all shadow-sm w-full md:w-auto order-1 md:order-2"
-                  aria-label="Salin nomor Dana"
-                >
-                  <i class="ph-bold ph-copy"></i> Salin
-                </button>
-              </div>
-            </div>
 
             <!-- ALAMAT KADO -->
             <div
@@ -1798,6 +1735,73 @@
         carousel.addEventListener("scroll", updateActiveDot, { passive: true });
         window.addEventListener("resize", updateActiveDot);
         updateActiveDot();
+        
+        // Autoplay: advance slides automatically, pause on interaction
+        const AUTOPLAY_INTERVAL = 3000; // ms between auto advances (2s)
+        const AUTOPLAY_RESUME_DELAY = 3000; // ms after interaction to resume
+        let autoplayTimer = null;
+        let resumeTimer = null;
+
+        const stopAutoplay = () => {
+          if (autoplayTimer) {
+            clearInterval(autoplayTimer);
+            autoplayTimer = null;
+          }
+        };
+
+        const startAutoplay = () => {
+          stopAutoplay();
+          autoplayTimer = setInterval(() => {
+            const maxScrollLeft = Math.max(0, carousel.scrollWidth - carousel.clientWidth);
+            const currentLeft = carousel.scrollLeft;
+
+            // if we've reached (or very near) the end, loop back to start
+            if (currentLeft >= maxScrollLeft - 2) {
+              carousel.scrollTo({ left: 0, behavior: "smooth" });
+            } else {
+              carousel.scrollBy({ left: scrollStep(), behavior: "smooth" });
+            }
+          }, AUTOPLAY_INTERVAL);
+        };
+
+        const pauseThenResume = () => {
+          stopAutoplay();
+          if (resumeTimer) clearTimeout(resumeTimer);
+          resumeTimer = setTimeout(() => startAutoplay(), AUTOPLAY_RESUME_DELAY);
+        };
+
+        // pause on hover/touch, resume on leave/end
+        carousel.addEventListener("mouseenter", stopAutoplay);
+        carousel.addEventListener("mouseleave", startAutoplay);
+        carousel.addEventListener("touchstart", stopAutoplay, { passive: true });
+        carousel.addEventListener("touchend", pauseThenResume, { passive: true });
+
+        // wrap original controls to pause/resume autoplay after user interaction
+        prevBtn.addEventListener("click", () => {
+          carousel.scrollBy({ left: -scrollStep(), behavior: "smooth" });
+          pauseThenResume();
+        });
+
+        nextBtn.addEventListener("click", () => {
+          carousel.scrollBy({ left: scrollStep(), behavior: "smooth" });
+          pauseThenResume();
+        });
+
+        dots.forEach((dot, index) => {
+          dot.addEventListener("click", () => {
+            const maxScrollLeft = Math.max(
+              0,
+              carousel.scrollWidth - carousel.clientWidth,
+            );
+            const targetLeft =
+              dotCount <= 1 ? 0 : (maxScrollLeft * index) / (dotCount - 1);
+            carousel.scrollTo({ left: targetLeft, behavior: "smooth" });
+            pauseThenResume();
+          });
+        });
+
+        // start autoplay
+        startAutoplay();
       }
 
       setInterval(() => {
