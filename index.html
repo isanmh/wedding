@@ -2000,9 +2000,6 @@
                 : "bg-red-50 text-red-600 border-red-100";
             const jumlahTamuLabel = msg.jumlah_tamu || msg.jumlahTamu || "-";
 
-            const msgId = msg.id || msg.timestamp || btoa((msg.nama||"")+"|"+(msg.ucapan||"")+"|"+(msg.timestamp||Date.now()));
-            const loveCount = Number(msg.love || msg.loves || msg.likes || 0);
-
             const html = `
               <div class="bg-blue-50/40 p-4 rounded-2xl border border-blue-100/50 shadow-sm">
                 <div class="flex justify-between items-center mb-2">
@@ -2013,12 +2010,8 @@
                   </div>
                 </div>
                 <p class="text-600 text-sm mb-3 leading-relaxed font-light text-gray-600">${msg.ucapan || ""}</p>
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-start">
                   <span class="text-[10px] text-gray-400 flex items-center gap-1"><i class="ph-fill ph-clock"></i> ${dateStr}</span>
-                  <button data-id="${msgId}" class="btn-love inline-flex items-center gap-2 text-sm text-gray-600 hover:text-red-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.657l-6.828-6.828a4 4 0 010-5.657z"/></svg>
-                    <span class="love-count">${loveCount}</span>
-                  </button>
                 </div>
               </div>
             `;
@@ -2059,32 +2052,7 @@
             btn.onclick = () => renderMessagesPage(Number(btn.dataset.page));
           });
 
-          // attach love handlers for rendered items
-          messagesList.querySelectorAll('.btn-love').forEach((btn) => {
-            btn.onclick = async () => {
-              const id = btn.dataset.id;
-              const key = `loved_${id}`;
-              if (localStorage.getItem(key)) return; // prevent double-love locally
-
-              const countSpan = btn.querySelector('.love-count');
-              let count = Number(countSpan.innerText) || 0;
-              count += 1;
-              countSpan.innerText = count;
-              btn.classList.add('text-red-500');
-              localStorage.setItem(key, '1');
-
-              // best-effort: notify server to persist love (server must support this action)
-              try {
-                await fetch(GAS_URL, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ action: 'love', id }),
-                });
-              } catch (err) {
-                console.warn('Failed to send love to server', err);
-              }
-            };
-          });
+          // (love feature removed)
         }
       }
 
