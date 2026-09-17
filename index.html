@@ -8,12 +8,15 @@
     />
 
     <!-- audio otomatis nadin -->
-    <iframe
+    <audio
       id="audio-player"
       src="nadin.mp3"
-      allow="autoplay"
+      preload="auto"
+      loop
+      muted
+      autoplay
       class="hidden"
-    ></iframe>
+    ></audio>
     <title>Undangan Pernikahan | Ihsan & Ai Liana</title>
 
     <!-- Google Fonts: Alex Brush (Names), Playfair (Headings), Plus Jakarta (Body), Amiri (Arabic) -->
@@ -1506,6 +1509,13 @@
           ? guestName
           : "Tamu Undangan";
 
+        const bgAudio = document.getElementById("audio-player");
+        if (bgAudio) {
+          bgAudio.volume = 0.45;
+          bgAudio.muted = true;
+          bgAudio.play().catch(() => {});
+        }
+
         createLeaves();
         setupGalleryCarousel();
         initModalGallery();
@@ -1877,6 +1887,26 @@
 
       window.toggleAudio = function () {
         const icon = document.getElementById("audio-icon");
+        const bgAudio = document.getElementById("audio-player");
+
+        if (bgAudio) {
+          if (bgAudio.muted) {
+            bgAudio.muted = false;
+            bgAudio.volume = 0.45;
+            bgAudio.play().catch(() => {});
+            icon.classList.remove("ph-speaker-slash");
+            icon.classList.add("animate-spin-slow", "ph-music-notes");
+            window.isPlaying = true;
+          } else {
+            bgAudio.muted = true;
+            bgAudio.pause();
+            icon.classList.remove("animate-spin-slow", "ph-music-notes");
+            icon.classList.add("ph-speaker-slash");
+            window.isPlaying = false;
+          }
+          return;
+        }
+
         if (!player || typeof player.playVideo !== "function") return;
 
         if (window.isPlaying) {
