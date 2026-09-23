@@ -684,7 +684,7 @@
               <p
                 class="text-xs md:text-sm text-gray-500 font-body leading-relaxed"
               >
-                Mempelai pria merupakan putra ke-2 dari<br /><span
+                Mempelai pria merupakan putra kedua dari<br /><span
                   class="font-serif text-gray-800 text-sm md:text-base font-semibold"
                   >Bapak H. Nana Subarna & Ibu Hj. Popon Rohayati</span
                 >
@@ -834,8 +834,8 @@
                 Minggu, 11 Oktober 2026
               </p>
               <p class="mb-4 text-sm md:text-base text-gray-200 relative z-10">
-                <i class="ph-fill ph-clock text-blueSoft mr-2"></i> 11.00 WIB -
-                15:00
+                <i class="ph-fill ph-clock text-blueSoft mr-2"></i> 11.00 -
+                15:00 WIB
               </p>
             </div>
           </div>
@@ -1494,7 +1494,7 @@
                   Pilih konfirmasi kehadiran...
                 </option>
                 <option value="Hadir">Hadir</option>
-                <option value="Masih Belum Pasti">Masih Belum Pasti</option>
+                <option value="Belum Pasti">Masih Belum Pasti</option>
                 <option value="Tidak Hadir">Tidak Hadir (Maaf)</option>
               </select>
             </div>
@@ -2262,7 +2262,7 @@
       const jumlahTamuSelect = document.getElementById("jumlah-tamu");
 
       function toggleJumlahTamu() {
-        if (kehadiranSelect.value === "Hadir" || kehadiranSelect.value === "Masih Belum Pasti") {
+        if (kehadiranSelect.value === "Hadir" || kehadiranSelect.value === "Belum Pasti") {
           jumlahTamuSelect.disabled = false;
           jumlahTamuSelect.classList.remove(
             "opacity-50",
