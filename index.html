@@ -713,12 +713,13 @@
               <!-- Foto profil melayang di atas card -->
               <div class="relative z-10 mx-auto -mb-14 w-32 h-32 md:w-40 md:h-40">
                 <div
-                  class="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-[0_15px_35px_rgba(30,41,59,0.25)] ring-2 ring-blue-100"
+                  class="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-[0_15px_35px_rgba(30,41,59,0.25)] ring-2 ring-blue-100 cursor-zoom-in group"
+                  onclick="openProfileImage(0)"
                 >
                   <img
                     src="img/ihsan.webp"
                     alt="Ihsan Miftahul Huda"
-                    class="w-full h-full object-cover"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                 </div>
                 
@@ -765,12 +766,13 @@
               <!-- Foto profil melayang di atas card -->
               <div class="relative z-10 mx-auto -mb-14 w-32 h-32 md:w-40 md:h-40">
                 <div
-                  class="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-[0_15px_35px_rgba(30,41,59,0.25)] ring-2 ring-blue-100"
+                  class="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-[0_15px_35px_rgba(30,41,59,0.25)] ring-2 ring-blue-100 cursor-zoom-in group"
+                  onclick="openProfileImage(1)"
                 >
                   <img
                     src="img/ai.webp"
                     alt="Ai Liana Nuraeni"
-                    class="w-full h-full object-cover"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                 </div>
                 
@@ -2065,6 +2067,18 @@
       window.openMomentImage = function (index) {
         modalImages = momentImages;
         modalSource = "masonry";
+        openModal(index);
+      };
+
+      // Sumber gambar untuk foto profil mempelai (pria & wanita)
+      const profileImages = [
+        { src: "img/ihsan.webp", alt: "Ihsan Miftahul Huda" },
+        { src: "img/ai.webp", alt: "Ai Liana Nuraeni" },
+      ];
+
+      window.openProfileImage = function (index) {
+        modalImages = profileImages;
+        modalSource = "profile";
         openModal(index);
       };
       let modalTouchStartX = 0;
