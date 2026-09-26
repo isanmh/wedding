@@ -98,7 +98,7 @@ const momenPilihanImages = [
   { src: "img/lamaran/l2.webp", alt: "Momen Pilihan l2" },
   { src: "img/lamaran/l3.webp", alt: "Momen Pilihan l3" },
   { src: "img/lamaran/l4.webp", alt: "Momen Pilihan l4" },
-  { src: "img/lamaran/l5.webp", alt: "Momen Pilihan l5" },
+
   { src: "img/lamaran/l6.webp", alt: "Momen Pilihan l6" },
   { src: "img/lamaran/l7.webp", alt: "Momen Pilihan l7" },
 
