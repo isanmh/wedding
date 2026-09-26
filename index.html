@@ -1090,11 +1090,18 @@
 
         <!-- 5b. FEATURED GALLERY (template lama: foto besar + strip thumbnail) untuk img/grt -->
         <div class="max-w-5xl mx-auto text-center">
-          <h3 class="font-serif text-xl md:text-2xl text-navy mb-6">
+          <h3
+            class="font-serif text-xl md:text-2xl text-navy mb-6"
+            data-aos="fade-up"
+            data-aos-duration="700"
+          >
             Momen Pilihan
           </h3>
           <div
             class="relative rounded-[28px] p-3 md:p-4 bg-white/20 backdrop-blur-xl border border-white/40 shadow-[0_20px_45px_rgba(30,41,59,0.15)]"
+            data-aos="zoom-in"
+            data-aos-duration="900"
+            data-aos-delay="100"
           >
             <!-- FOTO UTAMA -->
             <div
@@ -1107,14 +1114,14 @@
                 alt="Momen 1"
                 decoding="async"
                 fetchpriority="high"
-                class="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-700 ease-in-out"
+                class="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-[1100ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]"
               />
               <img
                 id="gallery-main-img-b"
                 src=""
                 alt=""
                 decoding="async"
-                class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 ease-in-out"
+                class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-[1100ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]"
               />
               <div
                 class="absolute bottom-3 right-3 bg-black/40 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-sm"
@@ -1129,7 +1136,7 @@
               class="mt-3 md:mt-4 flex gap-2 md:gap-3 overflow-x-auto no-scrollbar pb-1 snap-x snap-mandatory"
             >
               
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/1.webp" data-alt="Momen 1">
+              <button type="button" class="gallery-thumb-btn active" data-src="img/grt/1.webp" data-alt="Momen 1">
                 <img src="img/grt/1.webp" alt="Momen 1" class="w-full h-full object-cover" />
               </button>
               <button type="button" class="gallery-thumb-btn" data-src="img/grt/2.webp" data-alt="Momen 2">
@@ -2129,7 +2136,11 @@
         attachGalleryImageRetry(imgA);
         attachGalleryImageRetry(imgB);
         // pastikan foto utama pertama juga lewat jalur cache + retry
-        loadGalleryImage(imgA, modalImages[0].src, modalImages[0].alt);
+        loadGalleryImage(imgA, featuredModalImages[0].src, featuredModalImages[0].alt);
+
+        // Sinkronkan state awal: thumbnail index 0 HARUS aktif sesuai foto utama
+        // yang tampil, tidak bergantung pada class "active" yang sudah ada di markup.
+        thumbBtns.forEach((btn, i) => btn.classList.toggle("active", i === 0));
 
         let activeIndex = 0;
         let frontLayer = imgA; // layer yang sedang terlihat
@@ -2210,9 +2221,11 @@
           openModal(activeIndex);
         });
 
-        // Autoplay: otomatis berganti foto tiap 5 detik, berhenti sebentar saat berinteraksi
-        const AUTOPLAY_INTERVAL = 5000;
-        const AUTOPLAY_RESUME_DELAY = 5000;
+        // Autoplay: otomatis berganti foto, berhenti sebentar saat berinteraksi.
+        // Interval sengaja dibuat lebih panjang dari durasi crossfade (1100ms di CSS)
+        // supaya tiap foto sempat "diam" dulu sebelum bertransisi ke foto berikutnya.
+        const AUTOPLAY_INTERVAL = 5500;
+        const AUTOPLAY_RESUME_DELAY = 4500;
         let autoplayTimer = null;
         let resumeTimer = null;
 
