@@ -1088,7 +1088,7 @@
           </div>
         </div>
 
-        <!-- 5b. FEATURED GALLERY (template lama: foto besar + strip thumbnail) untuk img/grt -->
+        <!-- 5b. FEATURED GALLERY - 3D SLIDER CAROUSEL (img/grt), tanpa thumbnail, infinite -->
         <div class="max-w-5xl mx-auto text-center">
           <h3
             class="font-serif text-xl md:text-2xl text-navy mb-6"
@@ -1097,74 +1097,42 @@
           >
             Momen Pilihan
           </h3>
+
           <div
-            class="relative rounded-[28px] p-3 md:p-4 bg-white/20 backdrop-blur-xl border border-white/40 shadow-[0_20px_45px_rgba(30,41,59,0.15)]"
+            class="relative"
             data-aos="zoom-in"
             data-aos-duration="900"
             data-aos-delay="100"
           >
-            <!-- FOTO UTAMA -->
             <div
-              id="gallery-main-frame"
-              class="relative rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] cursor-grab active:cursor-grabbing select-none touch-pan-y aspect-[4/5] sm:aspect-[16/11] bg-gray-100"
+              id="moment-3d-stage"
+              class="relative w-full aspect-[3/4] sm:aspect-[16/9] mx-auto overflow-hidden select-none touch-pan-y"
+              style="perspective: 1400px"
             >
-              <div
-                id="gallery-main-track"
-                class="flex h-full w-full transform-gpu transition-transform duration-[950ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
-              >
-                <!-- slide per foto dibuat otomatis lewat JS dari data thumbnail di bawah,
-                     semua foto dimuat sekaligus di awal (bukan lazy per-slide) -->
-              </div>
-              <div
-                class="absolute bottom-3 right-3 bg-black/40 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-sm"
-              >
-                <i class="ph-bold ph-arrows-out"></i> Lihat
+              <div id="moment-3d-track" class="absolute inset-0">
+                <!-- slide 3D dibuat otomatis lewat JS, tanpa kloning -
+                     posisi tiap slide dihitung ulang dari jarak melingkar
+                     ke slide aktif sehingga carousel benar-benar infinite -->
               </div>
             </div>
 
-            <!-- STRIP THUMBNAIL -->
-            <div
-              id="gallery-thumbs"
-              class="mt-3 md:mt-4 flex gap-2 md:gap-3 overflow-x-auto no-scrollbar pb-1 snap-x snap-mandatory"
+            <!-- Tombol navigasi -->
+            <button
+              type="button"
+              id="moment-3d-prev"
+              class="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-40 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/85 backdrop-blur-sm shadow-lg flex items-center justify-center text-navy hover:bg-white hover:scale-110 transition-all"
+              aria-label="Foto sebelumnya"
             >
-              
-              <button type="button" class="gallery-thumb-btn active" data-src="img/grt/1.webp" data-alt="Momen 1">
-                <img src="img/grt/1.webp" alt="Momen 1" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/2.webp" data-alt="Momen 2">
-                <img src="img/grt/2.webp" alt="Momen 2" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/3.webp" data-alt="Momen 3">
-                <img src="img/grt/3.webp" alt="Momen 3" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/4.webp" data-alt="Momen 4">
-                <img src="img/grt/4.webp" alt="Momen 4" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/5.webp" data-alt="Momen 5">
-                <img src="img/grt/5.webp" alt="Momen 5" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/6.webp" data-alt="Momen 6">
-                <img src="img/grt/6.webp" alt="Momen 6" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/7.webp" data-alt="Momen 7">
-                <img src="img/grt/7.webp" alt="Momen 7" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/8.webp" data-alt="Momen 8">
-                <img src="img/grt/8.webp" alt="Momen 8" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/9.jpg" data-alt="Momen 9">
-                <img src="img/grt/9.jpg" alt="Momen 9" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/10.webp" data-alt="Momen 10">
-                <img src="img/grt/10.webp" alt="Momen 10" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/11.jpg" data-alt="Momen 11">
-                <img src="img/grt/11.jpg" alt="Momen 11" class="w-full h-full object-cover" />
-              </button>
-              <button type="button" class="gallery-thumb-btn" data-src="img/grt/12.jpg" data-alt="Momen 12">
-                <img src="img/grt/12.jpg" alt="Momen 12" class="w-full h-full object-cover" />
-              </button>
-            </div>
+              <i class="ph-bold ph-caret-left text-xl"></i>
+            </button>
+            <button
+              type="button"
+              id="moment-3d-next"
+              class="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 z-40 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/85 backdrop-blur-sm shadow-lg flex items-center justify-center text-navy hover:bg-white hover:scale-110 transition-all"
+              aria-label="Foto berikutnya"
+            >
+              <i class="ph-bold ph-caret-right text-xl"></i>
+            </button>
           </div>
         </div>
       </section>
@@ -1817,7 +1785,7 @@
 
         createLeaves("leaves-container");
         createLeaves("cover-leaves-container", window.innerWidth > 768 ? 16 : 9);
-        setupFeaturedGallery();
+        setup3DMomentCarousel();
         if (window.AOS && typeof AOS.init === "function") {
           AOS.init({
             once: true,
@@ -1993,6 +1961,22 @@
         { src: "img/bdg/09.webp", alt: "Momen Kebersamaan 8" },
       ];
 
+      // Sumber gambar untuk carousel 3D "Momen Pilihan" (img/grt)
+      const momenPilihanImages = [
+        { src: "img/grt/1.webp", alt: "Momen Pilihan 1" },
+        { src: "img/grt/2.webp", alt: "Momen Pilihan 2" },
+        { src: "img/grt/3.webp", alt: "Momen Pilihan 3" },
+        { src: "img/grt/4.webp", alt: "Momen Pilihan 4" },
+        { src: "img/grt/5.webp", alt: "Momen Pilihan 5" },
+        { src: "img/grt/6.webp", alt: "Momen Pilihan 6" },
+        { src: "img/grt/7.webp", alt: "Momen Pilihan 7" },
+        { src: "img/grt/8.webp", alt: "Momen Pilihan 8" },
+        { src: "img/grt/9.jpg", alt: "Momen Pilihan 9" },
+        { src: "img/grt/10.webp", alt: "Momen Pilihan 10" },
+        { src: "img/grt/11.jpg", alt: "Momen Pilihan 11" },
+        { src: "img/grt/12.jpg", alt: "Momen Pilihan 12" },
+      ];
+
       window.openMomentImage = function (index) {
         modalImages = momentImages;
         modalSource = "masonry";
@@ -2096,127 +2080,105 @@
       }
 
       // Featured Gallery (foto utama berupa carousel track + strip thumbnail)
-      function setupFeaturedGallery() {
-        const mainFrame = document.getElementById("gallery-main-frame");
-        const track = document.getElementById("gallery-main-track");
-        const thumbsWrap = document.getElementById("gallery-thumbs");
-        if (!mainFrame || !track || !thumbsWrap) return;
+      function setup3DMomentCarousel() {
+        const stage = document.getElementById("moment-3d-stage");
+        const track = document.getElementById("moment-3d-track");
+        const prevBtn = document.getElementById("moment-3d-prev");
+        const nextBtn = document.getElementById("moment-3d-next");
+        if (!stage || !track) return;
 
-        const thumbBtns = Array.from(
-          thumbsWrap.querySelectorAll(".gallery-thumb-btn"),
-        );
-        if (!thumbBtns.length) return;
+        const total = momenPilihanImages.length;
+        if (!total) return;
 
-        const featuredModalImages = thumbBtns.map((btn) => ({
-          src: btn.dataset.src,
-          alt: btn.dataset.alt || "Momen",
-        }));
-        modalImages = featuredModalImages;
+        modalImages = momenPilihanImages;
         modalSource = "featured";
 
-        // Muat semua thumbnail lewat cache localStorage + pasang auto-retry
-        const thumbImgs = thumbBtns.map((btn) => btn.querySelector("img"));
-        thumbBtns.forEach((btn, i) => {
-          loadGalleryImage(thumbImgs[i], btn.dataset.src, btn.dataset.alt);
-          attachGalleryImageRetry(thumbImgs[i]);
-        });
-
-        // Bangun carousel track: 1 slide penuh per foto, SEMUA dimuat sekaligus
-        // di awal (bukan nunggu klik/aktif dulu) sesuai jumlah & urutan thumbnail.
-        track.innerHTML = "";
-        featuredModalImages.forEach((data, i) => {
-          const slide = document.createElement("div");
-          slide.className = "w-full h-full shrink-0";
+        // Bangun semua slide sekaligus, TIDAK ada kloning slide sama sekali.
+        // Infinite carousel dicapai murni lewat matematika: posisi tiap slide
+        // dihitung ulang dari jarak melingkar (circular distance) ke slide aktif,
+        // jadi bisa diputar ke kiri/kanan selamanya tanpa pernah "mentok" atau lompat.
+        const slideEls = momenPilihanImages.map((data, i) => {
+          const el = document.createElement("div");
+          el.className =
+            "moment-3d-slide absolute top-1/2 left-1/2 w-[68%] sm:w-[46%] h-[86%] sm:h-[92%] rounded-2xl overflow-hidden shadow-[0_20px_45px_rgba(30,41,59,0.35)] cursor-pointer bg-gray-200";
+          el.style.transformStyle = "preserve-3d";
+          el.style.backfaceVisibility = "hidden";
+          el.style.willChange = "transform, opacity, filter";
+          el.style.transition =
+            "transform 700ms cubic-bezier(0.16,1,0.3,1), opacity 700ms ease, filter 700ms ease";
 
           const img = document.createElement("img");
           img.alt = data.alt;
           img.decoding = "async";
           if (i === 0) img.fetchPriority = "high";
-          img.className = "w-full h-full object-cover";
-
-          slide.appendChild(img);
-          track.appendChild(slide);
+          img.className = "w-full h-full object-cover pointer-events-none";
+          el.appendChild(img);
 
           loadGalleryImage(img, data.src, data.alt);
           attachGalleryImageRetry(img);
+
+          track.appendChild(el);
+          return el;
         });
 
-        // Sinkronkan state awal: slide & thumbnail index 0 aktif sejak load pertama.
         let activeIndex = 0;
-        thumbBtns.forEach((btn, i) => btn.classList.toggle("active", i === 0));
-        track.style.transform = "translateX(0%)";
 
-        // goTo() = satu-satunya sumber kebenaran posisi carousel: geser track,
-        // sinkronkan highlight thumbnail. Tidak ada fade/opacity sama sekali,
-        // murni translateX supaya gerakannya mulus & foto tidak pernah "kosong".
-        function goTo(index, { scroll = true } = {}) {
-          activeIndex = (index + thumbBtns.length) % thumbBtns.length;
-          track.style.transform = `translateX(-${activeIndex * 100}%)`;
+        function render() {
+          slideEls.forEach((el, i) => {
+            let diff = i - activeIndex;
+            // jarak melingkar terpendek supaya carousel benar-benar seamless/infinite
+            if (diff > total / 2) diff -= total;
+            if (diff < -total / 2) diff += total;
 
-          thumbBtns.forEach((btn, i) =>
-            btn.classList.toggle("active", i === activeIndex),
-          );
+            const absDiff = Math.abs(diff);
+            let translateX, scale, rotateY, zIndex, opacity, blurPx;
 
-          if (scroll) {
-            const btn = thumbBtns[activeIndex];
-            const wrapRect = thumbsWrap.getBoundingClientRect();
-            const btnRect = btn.getBoundingClientRect();
-            const offset =
-              btnRect.left -
-              wrapRect.left -
-              (wrapRect.width / 2 - btnRect.width / 2);
-            // scroll hanya di dalam strip thumbnail (horizontal), tidak menggeser scroll halaman
-            thumbsWrap.scrollBy({ left: offset, behavior: "smooth" });
-          }
+            if (absDiff === 0) {
+              translateX = 0;
+              scale = 1;
+              rotateY = 0;
+              zIndex = 30;
+              opacity = 1;
+              blurPx = 0;
+            } else if (absDiff === 1) {
+              translateX = diff > 0 ? 58 : -58;
+              scale = 0.74;
+              rotateY = diff > 0 ? -32 : 32;
+              zIndex = 20;
+              opacity = 0.85;
+              blurPx = 1;
+            } else if (absDiff === 2) {
+              translateX = diff > 0 ? 100 : -100;
+              scale = 0.55;
+              rotateY = diff > 0 ? -42 : 42;
+              zIndex = 10;
+              opacity = 0.45;
+              blurPx = 2;
+            } else {
+              translateX = diff > 0 ? 132 : -132;
+              scale = 0.4;
+              rotateY = diff > 0 ? -42 : 42;
+              zIndex = 0;
+              opacity = 0;
+              blurPx = 2;
+            }
+
+            el.style.transform = `translate(-50%, -50%) translateX(${translateX}%) scale(${scale}) rotateY(${rotateY}deg)`;
+            el.style.zIndex = String(zIndex);
+            el.style.opacity = String(opacity);
+            el.style.filter = blurPx ? `blur(${blurPx}px)` : "none";
+            el.style.pointerEvents = absDiff <= 2 ? "auto" : "none";
+          });
         }
 
-        // expose supaya modal bisa menyinkronkan foto utama saat geser di lightbox
-        window.setFeaturedGalleryIndex = goTo;
+        function goTo(index) {
+          // modulo positif: bisa diputar terus-menerus ke arah manapun (infinite)
+          activeIndex = ((index % total) + total) % total;
+          render();
+        }
 
-        thumbBtns.forEach((btn, i) => {
-          btn.addEventListener("click", () => {
-            goTo(i);
-            pauseThenResume();
-          });
-        });
-
-        // Kalau strip thumbnail di-geser/scroll manual (drag/swipe tanpa klik),
-        // foto utama ikut mengikuti thumbnail mana yang paling "aktif" (dekat tengah),
-        // tanpa memicu auto-scroll balik supaya tidak baku-lawan dengan gerakan user.
-        let scrollSyncTimer = null;
-        thumbsWrap.addEventListener(
-          "scroll",
-          () => {
-            if (scrollSyncTimer) clearTimeout(scrollSyncTimer);
-            scrollSyncTimer = setTimeout(() => {
-              const wrapRect = thumbsWrap.getBoundingClientRect();
-              const wrapCenter = wrapRect.left + wrapRect.width / 2;
-              let closestIndex = activeIndex;
-              let closestDist = Infinity;
-              thumbBtns.forEach((btn, i) => {
-                const r = btn.getBoundingClientRect();
-                const dist = Math.abs(r.left + r.width / 2 - wrapCenter);
-                if (dist < closestDist) {
-                  closestDist = dist;
-                  closestIndex = i;
-                }
-              });
-              if (closestIndex !== activeIndex) {
-                goTo(closestIndex, { scroll: false });
-              }
-            }, 120);
-          },
-          { passive: true },
-        );
-
-        let dragMoved = false; // true kalau interaksi terakhir adalah geser, bukan tap/klik
-
-        mainFrame.addEventListener("click", () => {
-          if (dragMoved) return; // ini bekas drag, bukan klik untuk buka lightbox
-          modalImages = featuredModalImages;
-          modalSource = "featured";
-          openModal(activeIndex);
-        });
+        // expose supaya modal bisa menyinkronkan carousel saat geser di lightbox
+        window.setFeaturedGalleryIndex = (index) => goTo(index);
 
         // Autoplay: otomatis berganti foto, berhenti sebentar saat berinteraksi.
         const AUTOPLAY_INTERVAL = 5000;
@@ -2244,71 +2206,82 @@
           resumeTimer = setTimeout(() => startAutoplay(), AUTOPLAY_RESUME_DELAY);
         }
 
-        thumbsWrap.addEventListener("mouseenter", stopAutoplay);
-        thumbsWrap.addEventListener("mouseleave", startAutoplay);
-        thumbsWrap.addEventListener("touchstart", stopAutoplay, {
-          passive: true,
-        });
-        thumbsWrap.addEventListener("touchend", pauseThenResume, {
-          passive: true,
-        });
-        mainFrame.addEventListener("mouseenter", stopAutoplay);
-        mainFrame.addEventListener("mouseleave", startAutoplay);
+        let dragMoved = false; // true kalau interaksi terakhir adalah geser, bukan tap/klik
 
-        // Drag/swipe foto besar (mouse & touch lewat Pointer Events).
-        // Track ikut jari/kursor secara real-time, baru snap ke slide
-        // terdekat begitu dilepas, dengan animasi yang sama halusnya.
+        slideEls.forEach((el, i) => {
+          el.addEventListener("click", () => {
+            if (dragMoved) return; // ini bekas drag, bukan klik
+            if (i === activeIndex) {
+              openModal(activeIndex);
+            } else {
+              goTo(i);
+              pauseThenResume();
+            }
+          });
+        });
+
+        if (prevBtn) {
+          prevBtn.addEventListener("click", () => {
+            goTo(activeIndex - 1);
+            pauseThenResume();
+          });
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener("click", () => {
+            goTo(activeIndex + 1);
+            pauseThenResume();
+          });
+        }
+
+        stage.addEventListener("mouseenter", stopAutoplay);
+        stage.addEventListener("mouseleave", startAutoplay);
+
+        // Swipe/drag (mouse & touch lewat Pointer Events) untuk pindah slide
         let isDragging = false;
         let dragStartX = 0;
-        let dragDeltaX = 0;
-        let frameWidth = 0;
 
-        mainFrame.addEventListener("pointerdown", (e) => {
+        stage.addEventListener("pointerdown", (e) => {
           if (e.pointerType === "mouse" && e.button !== 0) return;
           isDragging = true;
           dragMoved = false;
           dragStartX = e.clientX;
-          dragDeltaX = 0;
-          frameWidth = mainFrame.getBoundingClientRect().width || 1;
-          track.style.transition = "none";
           stopAutoplay();
-          mainFrame.setPointerCapture(e.pointerId);
+          stage.setPointerCapture(e.pointerId);
         });
 
-        mainFrame.addEventListener("pointermove", (e) => {
+        stage.addEventListener("pointermove", (e) => {
           if (!isDragging) return;
-          dragDeltaX = e.clientX - dragStartX;
-          if (Math.abs(dragDeltaX) > 4) dragMoved = true;
-          track.style.transform = `translateX(calc(-${activeIndex * 100}% + ${dragDeltaX}px))`;
+          if (Math.abs(e.clientX - dragStartX) > 6) dragMoved = true;
         });
 
-        function endDrag() {
+        function endDrag(e) {
           if (!isDragging) return;
           isDragging = false;
-          track.style.transition = "";
 
-          const threshold = Math.max(50, frameWidth * 0.18);
-          if (dragDeltaX <= -threshold) {
+          const deltaX = (e.clientX || dragStartX) - dragStartX;
+          const threshold = 40;
+          if (deltaX <= -threshold) {
             goTo(activeIndex + 1);
-          } else if (dragDeltaX >= threshold) {
+          } else if (deltaX >= threshold) {
             goTo(activeIndex - 1);
-          } else {
-            goTo(activeIndex); // geseran kurang jauh, kembali ke posisi semula
           }
           pauseThenResume();
-          // dragMoved dilepas sedikit belakangan, supaya event "click" yang
+          // dragMoved dilepas sedikit belakangan supaya event "click" yang
           // menyusul persis setelah ini masih sempat membaca nilainya
           setTimeout(() => {
             dragMoved = false;
           }, 0);
         }
 
-        mainFrame.addEventListener("pointerup", endDrag);
-        mainFrame.addEventListener("pointercancel", endDrag);
-        mainFrame.addEventListener("pointerleave", () => {
-          if (isDragging) endDrag();
+        stage.addEventListener("pointerup", endDrag);
+        stage.addEventListener("pointercancel", () => {
+          isDragging = false;
+        });
+        stage.addEventListener("pointerleave", () => {
+          if (isDragging) endDrag({ clientX: dragStartX });
         });
 
+        render();
         startAutoplay();
         initModalGallery();
       }
