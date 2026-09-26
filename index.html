@@ -2025,7 +2025,7 @@
         let frontLayer = imgA; // layer yang sedang terlihat
         let backLayer = imgB; // layer yang disiapkan untuk foto berikutnya
 
-        function crossfadeTo(index) {
+        function crossfadeTo(index, { scroll = true } = {}) {
           const data = modalImages[index];
           const thumbImg = thumbImgs[index];
 
@@ -2041,6 +2041,23 @@
             const temp = frontLayer;
             frontLayer = backLayer;
             backLayer = temp;
+
+            // highlight thumbnail & scroll baru jalan SETELAH foto benar-benar siap tampil,
+            // supaya tidak lagi "mendahului" saat gambar masih dimuat
+            thumbBtns.forEach((btn, i) =>
+              btn.classList.toggle("active", i === index),
+            );
+            if (scroll) {
+              const btn = thumbBtns[index];
+              const wrapRect = thumbsWrap.getBoundingClientRect();
+              const btnRect = btn.getBoundingClientRect();
+              const offset =
+                btnRect.left -
+                wrapRect.left -
+                (wrapRect.width / 2 - btnRect.width / 2);
+              // scroll hanya di dalam strip thumbnail (horizontal), tidak menggeser scroll halaman
+              thumbsWrap.scrollBy({ left: offset, behavior: "smooth" });
+            }
           };
 
           const alreadyReady =
@@ -2064,23 +2081,7 @@
 
         function setActive(index, { scroll = true } = {}) {
           activeIndex = (index + thumbBtns.length) % thumbBtns.length;
-          crossfadeTo(activeIndex);
-
-          thumbBtns.forEach((btn, i) =>
-            btn.classList.toggle("active", i === activeIndex),
-          );
-
-          if (scroll) {
-            const btn = thumbBtns[activeIndex];
-            const wrapRect = thumbsWrap.getBoundingClientRect();
-            const btnRect = btn.getBoundingClientRect();
-            const offset =
-              btnRect.left -
-              wrapRect.left -
-              (wrapRect.width / 2 - btnRect.width / 2);
-            // scroll hanya di dalam strip thumbnail (horizontal), tidak menggeser scroll halaman
-            thumbsWrap.scrollBy({ left: offset, behavior: "smooth" });
-          }
+          crossfadeTo(activeIndex, { scroll });
         }
 
         // expose supaya modal bisa menyinkronkan foto utama saat geser di lightbox
@@ -2097,9 +2098,9 @@
           openModal(activeIndex);
         });
 
-        // Autoplay: otomatis berganti foto tiap 3 detik, berhenti sebentar saat berinteraksi
-        const AUTOPLAY_INTERVAL = 3000;
-        const AUTOPLAY_RESUME_DELAY = 3000;
+        // Autoplay: otomatis berganti foto tiap 5 detik, berhenti sebentar saat berinteraksi
+        const AUTOPLAY_INTERVAL = 5000;
+        const AUTOPLAY_RESUME_DELAY = 5000;
         let autoplayTimer = null;
         let resumeTimer = null;
 
