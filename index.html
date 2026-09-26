@@ -1108,21 +1108,13 @@
               id="gallery-main-frame"
               class="relative rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] cursor-pointer aspect-[4/5] sm:aspect-[16/11] bg-gray-100"
             >
-              <img
-                id="gallery-main-img-a"
-                src="img/grt/1.webp"
-                alt="Momen 1"
-                decoding="async"
-                fetchpriority="high"
-                class="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-[1100ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]"
-              />
-              <img
-                id="gallery-main-img-b"
-                src=""
-                alt=""
-                decoding="async"
-                class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-[1100ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]"
-              />
+              <div
+                id="gallery-main-track"
+                class="flex h-full w-full transform-gpu transition-transform duration-[650ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]"
+              >
+                <!-- slide per foto dibuat otomatis lewat JS dari data thumbnail di bawah,
+                     semua foto dimuat sekaligus di awal (bukan lazy per-slide) -->
+              </div>
               <div
                 class="absolute bottom-3 right-3 bg-black/40 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-sm"
               >
@@ -2103,13 +2095,12 @@
         document.body.style.overflow = "auto";
       }
 
-      // Featured Gallery (foto utama + strip thumbnail)
+      // Featured Gallery (foto utama berupa carousel track + strip thumbnail)
       function setupFeaturedGallery() {
         const mainFrame = document.getElementById("gallery-main-frame");
-        const imgA = document.getElementById("gallery-main-img-a");
-        const imgB = document.getElementById("gallery-main-img-b");
+        const track = document.getElementById("gallery-main-track");
         const thumbsWrap = document.getElementById("gallery-thumbs");
-        if (!mainFrame || !imgA || !imgB || !thumbsWrap) return;
+        if (!mainFrame || !track || !thumbsWrap) return;
 
         const thumbBtns = Array.from(
           thumbsWrap.querySelectorAll(".gallery-thumb-btn"),
@@ -2124,96 +2115,99 @@
         modalSource = "featured";
 
         // Muat semua thumbnail lewat cache localStorage + pasang auto-retry
-        // (tidak membuat request Image() terpisah lagi supaya tidak dobel fetch,
-        // yang sebelumnya bisa bikin thumbnail gagal/hilang saat koneksi lambat)
         const thumbImgs = thumbBtns.map((btn) => btn.querySelector("img"));
         thumbBtns.forEach((btn, i) => {
-          const img = thumbImgs[i];
-          loadGalleryImage(img, btn.dataset.src, btn.dataset.alt);
+          loadGalleryImage(thumbImgs[i], btn.dataset.src, btn.dataset.alt);
+          attachGalleryImageRetry(thumbImgs[i]);
+        });
+
+        // Bangun carousel track: 1 slide penuh per foto, SEMUA dimuat sekaligus
+        // di awal (bukan nunggu klik/aktif dulu) sesuai jumlah & urutan thumbnail.
+        track.innerHTML = "";
+        featuredModalImages.forEach((data, i) => {
+          const slide = document.createElement("div");
+          slide.className = "w-full h-full shrink-0";
+
+          const img = document.createElement("img");
+          img.alt = data.alt;
+          img.decoding = "async";
+          if (i === 0) img.fetchPriority = "high";
+          img.className = "w-full h-full object-cover";
+
+          slide.appendChild(img);
+          track.appendChild(slide);
+
+          loadGalleryImage(img, data.src, data.alt);
           attachGalleryImageRetry(img);
         });
 
-        attachGalleryImageRetry(imgA);
-        attachGalleryImageRetry(imgB);
-        // pastikan foto utama pertama juga lewat jalur cache + retry
-        loadGalleryImage(imgA, featuredModalImages[0].src, featuredModalImages[0].alt);
-
-        // Sinkronkan state awal: thumbnail index 0 HARUS aktif sesuai foto utama
-        // yang tampil, tidak bergantung pada class "active" yang sudah ada di markup.
-        thumbBtns.forEach((btn, i) => btn.classList.toggle("active", i === 0));
-
+        // Sinkronkan state awal: slide & thumbnail index 0 aktif sejak load pertama.
         let activeIndex = 0;
-        let frontLayer = imgA; // layer yang sedang terlihat
-        let backLayer = imgB; // layer yang disiapkan untuk foto berikutnya
+        thumbBtns.forEach((btn, i) => btn.classList.toggle("active", i === 0));
+        track.style.transform = "translateX(0%)";
 
-        function crossfadeTo(index, { scroll = true } = {}) {
-          const data = featuredModalImages[index];
-          const thumbImg = thumbImgs[index];
+        // goTo() = satu-satunya sumber kebenaran posisi carousel: geser track,
+        // sinkronkan highlight thumbnail. Tidak ada fade/opacity sama sekali,
+        // murni translateX supaya gerakannya mulus & foto tidak pernah "kosong".
+        function goTo(index, { scroll = true } = {}) {
+          activeIndex = (index + thumbBtns.length) % thumbBtns.length;
+          track.style.transform = `translateX(-${activeIndex * 100}%)`;
 
-          const finishSwap = () => {
-            loadGalleryImage(backLayer, data.src, data.alt);
-            // paksa reflow agar transisi opacity berikutnya benar-benar terpicu
-            void backLayer.offsetWidth;
-            backLayer.classList.remove("opacity-0");
-            backLayer.classList.add("opacity-100");
-            frontLayer.classList.remove("opacity-100");
-            frontLayer.classList.add("opacity-0");
+          thumbBtns.forEach((btn, i) =>
+            btn.classList.toggle("active", i === activeIndex),
+          );
 
-            const temp = frontLayer;
-            frontLayer = backLayer;
-            backLayer = temp;
-
-            // highlight thumbnail & scroll baru jalan SETELAH foto benar-benar siap tampil,
-            // supaya tidak lagi "mendahului" saat gambar masih dimuat
-            thumbBtns.forEach((btn, i) =>
-              btn.classList.toggle("active", i === index),
-            );
-            if (scroll) {
-              const btn = thumbBtns[index];
-              const wrapRect = thumbsWrap.getBoundingClientRect();
-              const btnRect = btn.getBoundingClientRect();
-              const offset =
-                btnRect.left -
-                wrapRect.left -
-                (wrapRect.width / 2 - btnRect.width / 2);
-              // scroll hanya di dalam strip thumbnail (horizontal), tidak menggeser scroll halaman
-              thumbsWrap.scrollBy({ left: offset, behavior: "smooth" });
-            }
-          };
-
-          const alreadyReady =
-            getCachedGalleryImage(data.src) ||
-            (thumbImg && thumbImg.complete && thumbImg.naturalWidth > 0);
-
-          if (alreadyReady) {
-            finishSwap();
-          } else if (thumbImg) {
-            const onReady = () => {
-              thumbImg.removeEventListener("load", onReady);
-              thumbImg.removeEventListener("error", onReady);
-              finishSwap();
-            };
-            thumbImg.addEventListener("load", onReady, { once: true });
-            thumbImg.addEventListener("error", onReady, { once: true });
-          } else {
-            finishSwap();
+          if (scroll) {
+            const btn = thumbBtns[activeIndex];
+            const wrapRect = thumbsWrap.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+            const offset =
+              btnRect.left -
+              wrapRect.left -
+              (wrapRect.width / 2 - btnRect.width / 2);
+            // scroll hanya di dalam strip thumbnail (horizontal), tidak menggeser scroll halaman
+            thumbsWrap.scrollBy({ left: offset, behavior: "smooth" });
           }
         }
 
-        function setActive(index, { scroll = true } = {}) {
-          activeIndex = (index + thumbBtns.length) % thumbBtns.length;
-          crossfadeTo(activeIndex, { scroll });
-        }
-
         // expose supaya modal bisa menyinkronkan foto utama saat geser di lightbox
-        window.setFeaturedGalleryIndex = setActive;
+        window.setFeaturedGalleryIndex = goTo;
 
         thumbBtns.forEach((btn, i) => {
           btn.addEventListener("click", () => {
-            setActive(i);
+            goTo(i);
             pauseThenResume();
           });
         });
+
+        // Kalau strip thumbnail di-geser/scroll manual (drag/swipe tanpa klik),
+        // foto utama ikut mengikuti thumbnail mana yang paling "aktif" (dekat tengah),
+        // tanpa memicu auto-scroll balik supaya tidak baku-lawan dengan gerakan user.
+        let scrollSyncTimer = null;
+        thumbsWrap.addEventListener(
+          "scroll",
+          () => {
+            if (scrollSyncTimer) clearTimeout(scrollSyncTimer);
+            scrollSyncTimer = setTimeout(() => {
+              const wrapRect = thumbsWrap.getBoundingClientRect();
+              const wrapCenter = wrapRect.left + wrapRect.width / 2;
+              let closestIndex = activeIndex;
+              let closestDist = Infinity;
+              thumbBtns.forEach((btn, i) => {
+                const r = btn.getBoundingClientRect();
+                const dist = Math.abs(r.left + r.width / 2 - wrapCenter);
+                if (dist < closestDist) {
+                  closestDist = dist;
+                  closestIndex = i;
+                }
+              });
+              if (closestIndex !== activeIndex) {
+                goTo(closestIndex, { scroll: false });
+              }
+            }, 120);
+          },
+          { passive: true },
+        );
 
         mainFrame.addEventListener("click", () => {
           modalImages = featuredModalImages;
@@ -2222,9 +2216,7 @@
         });
 
         // Autoplay: otomatis berganti foto, berhenti sebentar saat berinteraksi.
-        // Interval sengaja dibuat lebih panjang dari durasi crossfade (1100ms di CSS)
-        // supaya tiap foto sempat "diam" dulu sebelum bertransisi ke foto berikutnya.
-        const AUTOPLAY_INTERVAL = 5500;
+        const AUTOPLAY_INTERVAL = 5000;
         const AUTOPLAY_RESUME_DELAY = 4500;
         let autoplayTimer = null;
         let resumeTimer = null;
@@ -2239,7 +2231,7 @@
         const startAutoplay = () => {
           stopAutoplay();
           autoplayTimer = setInterval(() => {
-            setActive(activeIndex + 1);
+            goTo(activeIndex + 1);
           }, AUTOPLAY_INTERVAL);
         };
 
