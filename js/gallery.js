@@ -121,8 +121,8 @@ const momenPilihanImages = [
   { src: "img/grt/014.webp", alt: "Momen Pilihan 014" },
   { src: "img/grt/14.webp", alt: "Momen Pilihan 14" },
   { src: "img/grt/15.webp", alt: "Momen Pilihan 15" },
-  { src: "img/grt/16.webp", alt: "Momen Pilihan 16" },
   { src: "img/grt/17.webp", alt: "Momen Pilihan 17" },
+  { src: "img/grt/16.webp", alt: "Momen Pilihan 16" },
 ];
 
 window.openMomentImage = function (index) {
