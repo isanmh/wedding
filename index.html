@@ -1106,11 +1106,11 @@
             <!-- FOTO UTAMA -->
             <div
               id="gallery-main-frame"
-              class="relative rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] cursor-pointer aspect-[4/5] sm:aspect-[16/11] bg-gray-100"
+              class="relative rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] cursor-grab active:cursor-grabbing select-none touch-pan-y aspect-[4/5] sm:aspect-[16/11] bg-gray-100"
             >
               <div
                 id="gallery-main-track"
-                class="flex h-full w-full transform-gpu transition-transform duration-[650ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)]"
+                class="flex h-full w-full transform-gpu transition-transform duration-[950ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
               >
                 <!-- slide per foto dibuat otomatis lewat JS dari data thumbnail di bawah,
                      semua foto dimuat sekaligus di awal (bukan lazy per-slide) -->
@@ -2209,7 +2209,10 @@
           { passive: true },
         );
 
+        let dragMoved = false; // true kalau interaksi terakhir adalah geser, bukan tap/klik
+
         mainFrame.addEventListener("click", () => {
+          if (dragMoved) return; // ini bekas drag, bukan klik untuk buka lightbox
           modalImages = featuredModalImages;
           modalSource = "featured";
           openModal(activeIndex);
@@ -2251,6 +2254,60 @@
         });
         mainFrame.addEventListener("mouseenter", stopAutoplay);
         mainFrame.addEventListener("mouseleave", startAutoplay);
+
+        // Drag/swipe foto besar (mouse & touch lewat Pointer Events).
+        // Track ikut jari/kursor secara real-time, baru snap ke slide
+        // terdekat begitu dilepas, dengan animasi yang sama halusnya.
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragDeltaX = 0;
+        let frameWidth = 0;
+
+        mainFrame.addEventListener("pointerdown", (e) => {
+          if (e.pointerType === "mouse" && e.button !== 0) return;
+          isDragging = true;
+          dragMoved = false;
+          dragStartX = e.clientX;
+          dragDeltaX = 0;
+          frameWidth = mainFrame.getBoundingClientRect().width || 1;
+          track.style.transition = "none";
+          stopAutoplay();
+          mainFrame.setPointerCapture(e.pointerId);
+        });
+
+        mainFrame.addEventListener("pointermove", (e) => {
+          if (!isDragging) return;
+          dragDeltaX = e.clientX - dragStartX;
+          if (Math.abs(dragDeltaX) > 4) dragMoved = true;
+          track.style.transform = `translateX(calc(-${activeIndex * 100}% + ${dragDeltaX}px))`;
+        });
+
+        function endDrag() {
+          if (!isDragging) return;
+          isDragging = false;
+          track.style.transition = "";
+
+          const threshold = Math.max(50, frameWidth * 0.18);
+          if (dragDeltaX <= -threshold) {
+            goTo(activeIndex + 1);
+          } else if (dragDeltaX >= threshold) {
+            goTo(activeIndex - 1);
+          } else {
+            goTo(activeIndex); // geseran kurang jauh, kembali ke posisi semula
+          }
+          pauseThenResume();
+          // dragMoved dilepas sedikit belakangan, supaya event "click" yang
+          // menyusul persis setelah ini masih sempat membaca nilainya
+          setTimeout(() => {
+            dragMoved = false;
+          }, 0);
+        }
+
+        mainFrame.addEventListener("pointerup", endDrag);
+        mainFrame.addEventListener("pointercancel", endDrag);
+        mainFrame.addEventListener("pointerleave", () => {
+          if (isDragging) endDrag();
+        });
 
         startAutoplay();
         initModalGallery();
