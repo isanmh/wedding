@@ -196,6 +196,36 @@
         background: #3a506b;
       }
 
+      /* Featured gallery thumbnail strip */
+      .gallery-thumb-btn {
+        flex-shrink: 0;
+        width: 64px;
+        height: 64px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid transparent;
+        opacity: 0.6;
+        cursor: pointer;
+        padding: 0;
+        transition: all 0.3s ease;
+        scroll-snap-align: start;
+      }
+      @media (min-width: 640px) {
+        .gallery-thumb-btn {
+          width: 84px;
+          height: 84px;
+        }
+      }
+      .gallery-thumb-btn:hover {
+        opacity: 0.9;
+      }
+      .gallery-thumb-btn.active {
+        opacity: 1;
+        border-color: #3a506b;
+        box-shadow: 0 4px 14px rgba(58, 80, 107, 0.35);
+        transform: translateY(-2px);
+      }
+
       /* Cover transition smoother */
       #cover-screen {
         transform: translate3d(0, 0, 0);
@@ -958,231 +988,97 @@
             Potret kebahagiaan kami berdua menuju hari istimewa.
           </p>
 
-          <div class="relative">
+          <div
+            class="relative rounded-[28px] p-3 md:p-4 bg-white/20 backdrop-blur-xl border border-white/40 shadow-[0_20px_45px_rgba(30,41,59,0.15)]"
+          >
+            <!-- FOTO UTAMA -->
             <div
-              id="gallery-carousel"
-              class="gallery-carousel no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3"
+              id="gallery-main-frame"
+              class="relative rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] cursor-pointer aspect-[4/5] sm:aspect-[16/11] bg-gray-100"
             >
+              <img
+                id="gallery-main-img-a"
+                src="img/bdg/01.webp"
+                alt="Momen 1"
+                decoding="async"
+                fetchpriority="high"
+                class="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-700 ease-in-out"
+              />
+              <img
+                id="gallery-main-img-b"
+                src=""
+                alt=""
+                decoding="async"
+                class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 ease-in-out"
+              />
               <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
+                class="absolute bottom-3 right-3 bg-black/40 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-sm"
               >
-                <img
-                  src="img/bdg/01.webp"
-                  alt="Gallery 1"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
+                <i class="ph-bold ph-arrows-out"></i> Lihat
               </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/bdg/03.webp"
-                  alt="Gallery 1"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/bdg/04.webp"
-                  alt="Gallery 1"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/bdg/05.webp"
-                  alt="Gallery 1"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/bdg/06.webp"
-                  alt="Gallery 1"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/bdg/07.webp"
-                  alt="Gallery 1"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/bdg/08.webp"
-                  alt="Gallery 1"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/bdg/09.webp"
-                  alt="Gallery 1"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/cincin.JPG"
-                  alt="Gallery 1"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/grt/1.webp"
-                  alt="Gallery 1"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/grt/2.webp"
-                  alt="Gallery 2"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/grt/3.webp"
-                  alt="Gallery 4"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/grt/4.webp"
-                  alt="Gallery 5"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/grt/5.webp"
-                  alt="Gallery 6"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/grt/7.webp"
-                  alt="Gallery 7"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/grt/8.webp"
-                  alt="Gallery 8"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/grt/9.webp"
-                  alt="Gallery 8"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/grt/10.webp"
-                  alt="Gallery 8"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="img/11.jpeg"
-                  alt="Gallery 8"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <!-- <div
-                onclick="openModal(this)"
-                class="gallery-slide rounded-2xl overflow-hidden shadow-[0_8px_20px_rgba(74,143,199,0.2)] group relative cursor-pointer aspect-square shrink-0 w-[80%] sm:w-[48%] md:w-[31%] lg:w-[23%] snap-start"
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80"
-                  alt="Gallery 3"
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-              </div> -->
             </div>
 
-            <div class="mt-5 flex items-center justify-center gap-3">
-              <button
-                id="gallery-prev"
-                type="button"
-                class="w-10 h-10 rounded-full bg-white border border-blue-200 text-blueZ hover:bg-blue-50 transition shadow-sm"
-                aria-label="Slide sebelumnya"
-              >
-                <i class="ph-bold ph-caret-left"></i>
+            <!-- STRIP THUMBNAIL -->
+            <div
+              id="gallery-thumbs"
+              class="mt-3 md:mt-4 flex gap-2 md:gap-3 overflow-x-auto no-scrollbar pb-1 snap-x snap-mandatory"
+            >
+              <button type="button" class="gallery-thumb-btn active" data-src="img/bdg/01.webp" data-alt="Momen 1">
+                <img src="img/bdg/01.webp" alt="Momen 1" class="w-full h-full object-cover" />
               </button>
-              <div id="gallery-dots" class="flex items-center gap-2"></div>
-              <button
-                id="gallery-next"
-                type="button"
-                class="w-10 h-10 rounded-full bg-white border border-blue-200 text-blueZ hover:bg-blue-50 transition shadow-sm"
-                aria-label="Slide berikutnya"
-              >
-                <i class="ph-bold ph-caret-right"></i>
+              <button type="button" class="gallery-thumb-btn" data-src="img/bdg/03.webp" data-alt="Momen 2">
+                <img src="img/bdg/03.webp" alt="Momen 2" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/bdg/04.webp" data-alt="Momen 3">
+                <img src="img/bdg/04.webp" alt="Momen 3" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/bdg/05.webp" data-alt="Momen 4">
+                <img src="img/bdg/05.webp" alt="Momen 4" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/bdg/06.webp" data-alt="Momen 5">
+                <img src="img/bdg/06.webp" alt="Momen 5" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/bdg/07.webp" data-alt="Momen 6">
+                <img src="img/bdg/07.webp" alt="Momen 6" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/bdg/08.webp" data-alt="Momen 7">
+                <img src="img/bdg/08.webp" alt="Momen 7" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/bdg/09.webp" data-alt="Momen 8">
+                <img src="img/bdg/09.webp" alt="Momen 8" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/cincin.JPG" data-alt="Momen 9">
+                <img src="img/cincin.JPG" alt="Momen 9" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/grt/1.webp" data-alt="Momen 10">
+                <img src="img/grt/1.webp" alt="Momen 10" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/grt/2.webp" data-alt="Momen 11">
+                <img src="img/grt/2.webp" alt="Momen 11" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/grt/3.webp" data-alt="Momen 12">
+                <img src="img/grt/3.webp" alt="Momen 12" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/grt/4.webp" data-alt="Momen 13">
+                <img src="img/grt/4.webp" alt="Momen 13" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/grt/5.webp" data-alt="Momen 14">
+                <img src="img/grt/5.webp" alt="Momen 14" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/grt/7.webp" data-alt="Momen 15">
+                <img src="img/grt/7.webp" alt="Momen 15" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/grt/8.webp" data-alt="Momen 16">
+                <img src="img/grt/8.webp" alt="Momen 16" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/grt/9.webp" data-alt="Momen 17">
+                <img src="img/grt/9.webp" alt="Momen 17" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/grt/10.webp" data-alt="Momen 18">
+                <img src="img/grt/10.webp" alt="Momen 18" class="w-full h-full object-cover" />
+              </button>
+              <button type="button" class="gallery-thumb-btn" data-src="img/11.jpeg" data-alt="Momen 19">
+                <img src="img/11.jpeg" alt="Momen 19" class="w-full h-full object-cover" />
               </button>
             </div>
           </div>
@@ -1837,8 +1733,7 @@
 
         createLeaves("leaves-container");
         createLeaves("cover-leaves-container", window.innerWidth > 768 ? 16 : 9);
-        setupGalleryCarousel();
-        initModalGallery();
+        setupFeaturedGallery();
         if (window.AOS && typeof AOS.init === "function") {
           AOS.init({
             once: true,
@@ -1919,6 +1814,84 @@
         }
       }
 
+      // ===== Utilitas cache gambar galeri (localStorage) + retry otomatis =====
+      // Supaya thumbnail/foto tidak "hilang-hilangan" saat koneksi lambat/putus-putus:
+      // 1) Sekali berhasil dimuat, gambar disimpan sebagai data URL di localStorage
+      //    sehingga kunjungan/perpindahan berikutnya tidak perlu request ulang ke server.
+      // 2) Jika gambar gagal dimuat (event error), otomatis dicoba ulang beberapa kali.
+      const GALLERY_CACHE_PREFIX = "galimg:";
+      const GALLERY_CACHE_MAX_BYTES = 450 * 1024; // ~450KB/gambar, jaga agar kuota localStorage tidak cepat penuh
+
+      function getCachedGalleryImage(src) {
+        try {
+          return localStorage.getItem(GALLERY_CACHE_PREFIX + src);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function setCachedGalleryImage(src, dataUrl) {
+        try {
+          localStorage.setItem(GALLERY_CACHE_PREFIX + src, dataUrl);
+        } catch (e) {
+          // kemungkinan localStorage penuh, biarkan saja & lanjut pakai network seperti biasa
+        }
+      }
+
+      function fetchAndCacheGalleryImage(src) {
+        if (getCachedGalleryImage(src)) return;
+        fetch(src)
+          .then((res) => (res.ok ? res.blob() : Promise.reject()))
+          .then((blob) => {
+            if (blob.size > GALLERY_CACHE_MAX_BYTES) return;
+            const reader = new FileReader();
+            reader.onload = () => setCachedGalleryImage(src, reader.result);
+            reader.readAsDataURL(blob);
+          })
+          .catch(() => {
+            /* gagal cache tidak masalah, gambar tetap tampil dari network */
+          });
+      }
+
+      function loadGalleryImage(imgEl, src, alt) {
+        if (!imgEl || !src) return;
+        imgEl.dataset.currentSrc = src;
+        if (alt) imgEl.alt = alt;
+        const cached = getCachedGalleryImage(src);
+        if (cached) {
+          imgEl.src = cached;
+        } else {
+          imgEl.src = src;
+          fetchAndCacheGalleryImage(src);
+        }
+      }
+
+      function attachGalleryImageRetry(imgEl, maxRetries = 2) {
+        if (!imgEl || imgEl.dataset.retryAttached) return;
+        imgEl.dataset.retryAttached = "1";
+        let attempts = 0;
+        imgEl.addEventListener("load", () => {
+          attempts = 0;
+        });
+        imgEl.addEventListener("error", () => {
+          const target = imgEl.dataset.currentSrc;
+          if (!target) return;
+          attempts++;
+          if (attempts > maxRetries) return;
+          setTimeout(
+            () => {
+              // coba ulang langsung dari network (lewati cache yang mungkin korup)
+              imgEl.src =
+                target +
+                (target.includes("?") ? "&" : "?") +
+                "retry=" +
+                Date.now();
+            },
+            500 * attempts,
+          );
+        });
+      }
+
       // Lightbox Modal Functions
       let modalImages = [];
       let currentModalIndex = 0;
@@ -1926,12 +1899,11 @@
       let modalTouchStartY = 0;
 
       function initModalGallery() {
-        modalImages = Array.from(
-          document.querySelectorAll("#gallery-carousel .gallery-slide img"),
-        );
         const modal = document.getElementById("imageModal");
-
         if (!modal) return;
+
+        const modalImg = document.getElementById("modalImage");
+        attachGalleryImageRetry(modalImg);
 
         modal.addEventListener(
           "touchstart",
@@ -1973,8 +1945,16 @@
         currentModalIndex = index;
         const sourceImg = modalImages[currentModalIndex];
         const modalImg = document.getElementById("modalImage");
-        modalImg.src = sourceImg.src;
-        modalImg.alt = sourceImg.alt || `Gallery ${currentModalIndex + 1}`;
+        loadGalleryImage(
+          modalImg,
+          sourceImg.src,
+          sourceImg.alt || `Momen ${currentModalIndex + 1}`,
+        );
+
+        // sinkronkan foto utama & thumbnail aktif dengan modal
+        if (typeof window.setFeaturedGalleryIndex === "function") {
+          window.setFeaturedGalleryIndex(currentModalIndex, { scroll: true });
+        }
       }
 
       function showPrevModalImage() {
@@ -1988,18 +1968,9 @@
       window.showPrevModalImage = showPrevModalImage;
       window.showNextModalImage = showNextModalImage;
 
-      function openModal(element) {
-        const img = element.querySelector("img");
-        if (!modalImages.length) {
-          modalImages = Array.from(
-            document.querySelectorAll("#gallery-carousel .gallery-slide img"),
-          );
-        }
-
-        const clickedIndex = modalImages.findIndex(
-          (item) => item.src === img.src,
-        );
-        currentModalIndex = clickedIndex >= 0 ? clickedIndex : 0;
+      function openModal(index) {
+        if (!modalImages.length) return;
+        currentModalIndex = index >= 0 ? index : 0;
 
         const modal = document.getElementById("imageModal");
         showModalImage(currentModalIndex);
@@ -2017,75 +1988,118 @@
         document.body.style.overflow = "auto";
       }
 
-      function setupGalleryCarousel() {
-        const carousel = document.getElementById("gallery-carousel");
-        const prevBtn = document.getElementById("gallery-prev");
-        const nextBtn = document.getElementById("gallery-next");
-        const dotsWrap = document.getElementById("gallery-dots");
-        if (!carousel || !prevBtn || !nextBtn || !dotsWrap) return;
+      // Featured Gallery (foto utama + strip thumbnail)
+      function setupFeaturedGallery() {
+        const mainFrame = document.getElementById("gallery-main-frame");
+        const imgA = document.getElementById("gallery-main-img-a");
+        const imgB = document.getElementById("gallery-main-img-b");
+        const thumbsWrap = document.getElementById("gallery-thumbs");
+        if (!mainFrame || !imgA || !imgB || !thumbsWrap) return;
 
-        const slides = Array.from(carousel.querySelectorAll(".gallery-slide"));
-        if (!slides.length) return;
+        const thumbBtns = Array.from(
+          thumbsWrap.querySelectorAll(".gallery-thumb-btn"),
+        );
+        if (!thumbBtns.length) return;
 
-        const dotCount = Math.min(5, slides.length);
+        modalImages = thumbBtns.map((btn) => ({
+          src: btn.dataset.src,
+          alt: btn.dataset.alt || "Momen",
+        }));
 
-        dotsWrap.innerHTML = Array.from(
-          { length: dotCount },
-          (_, i) =>
-            `<button type="button" class="gallery-dot ${i === 0 ? "active" : ""}" data-index="${i}" aria-label="Ke posisi ${i + 1}"></button>`,
-        ).join("");
-        const dots = Array.from(dotsWrap.querySelectorAll(".gallery-dot"));
-
-        const updateActiveDot = () => {
-          const maxScrollLeft = Math.max(
-            1,
-            carousel.scrollWidth - carousel.clientWidth,
-          );
-          const progress = carousel.scrollLeft / maxScrollLeft;
-          const activeIndex = Math.min(
-            dotCount - 1,
-            Math.max(0, Math.round(progress * (dotCount - 1))),
-          );
-
-          dots.forEach((dot, index) =>
-            dot.classList.toggle("active", index === activeIndex),
-          );
-        };
-
-        const scrollStep = () => {
-          const first = slides[0];
-          const second = slides[1];
-          if (!second) return first.clientWidth + 16;
-          return Math.max(220, second.offsetLeft - first.offsetLeft);
-        };
-
-        prevBtn.addEventListener("click", () => {
-          carousel.scrollBy({ left: -scrollStep(), behavior: "smooth" });
+        // Muat semua thumbnail lewat cache localStorage + pasang auto-retry
+        // (tidak membuat request Image() terpisah lagi supaya tidak dobel fetch,
+        // yang sebelumnya bisa bikin thumbnail gagal/hilang saat koneksi lambat)
+        const thumbImgs = thumbBtns.map((btn) => btn.querySelector("img"));
+        thumbBtns.forEach((btn, i) => {
+          const img = thumbImgs[i];
+          loadGalleryImage(img, btn.dataset.src, btn.dataset.alt);
+          attachGalleryImageRetry(img);
         });
 
-        nextBtn.addEventListener("click", () => {
-          carousel.scrollBy({ left: scrollStep(), behavior: "smooth" });
-        });
+        attachGalleryImageRetry(imgA);
+        attachGalleryImageRetry(imgB);
+        // pastikan foto utama pertama juga lewat jalur cache + retry
+        loadGalleryImage(imgA, modalImages[0].src, modalImages[0].alt);
 
-        dots.forEach((dot, index) => {
-          dot.addEventListener("click", () => {
-            const maxScrollLeft = Math.max(
-              0,
-              carousel.scrollWidth - carousel.clientWidth,
-            );
-            const targetLeft =
-              dotCount <= 1 ? 0 : (maxScrollLeft * index) / (dotCount - 1);
-            carousel.scrollTo({ left: targetLeft, behavior: "smooth" });
+        let activeIndex = 0;
+        let frontLayer = imgA; // layer yang sedang terlihat
+        let backLayer = imgB; // layer yang disiapkan untuk foto berikutnya
+
+        function crossfadeTo(index) {
+          const data = modalImages[index];
+          const thumbImg = thumbImgs[index];
+
+          const finishSwap = () => {
+            loadGalleryImage(backLayer, data.src, data.alt);
+            // paksa reflow agar transisi opacity berikutnya benar-benar terpicu
+            void backLayer.offsetWidth;
+            backLayer.classList.remove("opacity-0");
+            backLayer.classList.add("opacity-100");
+            frontLayer.classList.remove("opacity-100");
+            frontLayer.classList.add("opacity-0");
+
+            const temp = frontLayer;
+            frontLayer = backLayer;
+            backLayer = temp;
+          };
+
+          const alreadyReady =
+            getCachedGalleryImage(data.src) ||
+            (thumbImg && thumbImg.complete && thumbImg.naturalWidth > 0);
+
+          if (alreadyReady) {
+            finishSwap();
+          } else if (thumbImg) {
+            const onReady = () => {
+              thumbImg.removeEventListener("load", onReady);
+              thumbImg.removeEventListener("error", onReady);
+              finishSwap();
+            };
+            thumbImg.addEventListener("load", onReady, { once: true });
+            thumbImg.addEventListener("error", onReady, { once: true });
+          } else {
+            finishSwap();
+          }
+        }
+
+        function setActive(index, { scroll = true } = {}) {
+          activeIndex = (index + thumbBtns.length) % thumbBtns.length;
+          crossfadeTo(activeIndex);
+
+          thumbBtns.forEach((btn, i) =>
+            btn.classList.toggle("active", i === activeIndex),
+          );
+
+          if (scroll) {
+            const btn = thumbBtns[activeIndex];
+            const wrapRect = thumbsWrap.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+            const offset =
+              btnRect.left -
+              wrapRect.left -
+              (wrapRect.width / 2 - btnRect.width / 2);
+            // scroll hanya di dalam strip thumbnail (horizontal), tidak menggeser scroll halaman
+            thumbsWrap.scrollBy({ left: offset, behavior: "smooth" });
+          }
+        }
+
+        // expose supaya modal bisa menyinkronkan foto utama saat geser di lightbox
+        window.setFeaturedGalleryIndex = setActive;
+
+        thumbBtns.forEach((btn, i) => {
+          btn.addEventListener("click", () => {
+            setActive(i);
+            pauseThenResume();
           });
         });
 
-        carousel.addEventListener("scroll", updateActiveDot, { passive: true });
-        window.addEventListener("resize", updateActiveDot);
-        updateActiveDot();
-        
-        // Autoplay: advance slides automatically, pause on interaction
-        const AUTOPLAY_INTERVAL = 3000; // ms between auto advances (2s)
-        const AUTOPLAY_RESUME_DELAY = 3000; // ms after interaction to resume
+        mainFrame.addEventListener("click", () => {
+          openModal(activeIndex);
+        });
+
+        // Autoplay: otomatis berganti foto tiap 3 detik, berhenti sebentar saat berinteraksi
+        const AUTOPLAY_INTERVAL = 3000;
+        const AUTOPLAY_RESUME_DELAY = 3000;
         let autoplayTimer = null;
         let resumeTimer = null;
 
@@ -2099,56 +2113,29 @@
         const startAutoplay = () => {
           stopAutoplay();
           autoplayTimer = setInterval(() => {
-            const maxScrollLeft = Math.max(0, carousel.scrollWidth - carousel.clientWidth);
-            const currentLeft = carousel.scrollLeft;
-
-            // if we've reached (or very near) the end, loop back to start
-            if (currentLeft >= maxScrollLeft - 2) {
-              carousel.scrollTo({ left: 0, behavior: "smooth" });
-            } else {
-              carousel.scrollBy({ left: scrollStep(), behavior: "smooth" });
-            }
+            setActive(activeIndex + 1);
           }, AUTOPLAY_INTERVAL);
         };
 
-        const pauseThenResume = () => {
+        function pauseThenResume() {
           stopAutoplay();
           if (resumeTimer) clearTimeout(resumeTimer);
           resumeTimer = setTimeout(() => startAutoplay(), AUTOPLAY_RESUME_DELAY);
-        };
+        }
 
-        // pause on hover/touch, resume on leave/end
-        carousel.addEventListener("mouseenter", stopAutoplay);
-        carousel.addEventListener("mouseleave", startAutoplay);
-        carousel.addEventListener("touchstart", stopAutoplay, { passive: true });
-        carousel.addEventListener("touchend", pauseThenResume, { passive: true });
-
-        // wrap original controls to pause/resume autoplay after user interaction
-        prevBtn.addEventListener("click", () => {
-          carousel.scrollBy({ left: -scrollStep(), behavior: "smooth" });
-          pauseThenResume();
+        thumbsWrap.addEventListener("mouseenter", stopAutoplay);
+        thumbsWrap.addEventListener("mouseleave", startAutoplay);
+        thumbsWrap.addEventListener("touchstart", stopAutoplay, {
+          passive: true,
         });
-
-        nextBtn.addEventListener("click", () => {
-          carousel.scrollBy({ left: scrollStep(), behavior: "smooth" });
-          pauseThenResume();
+        thumbsWrap.addEventListener("touchend", pauseThenResume, {
+          passive: true,
         });
+        mainFrame.addEventListener("mouseenter", stopAutoplay);
+        mainFrame.addEventListener("mouseleave", startAutoplay);
 
-        dots.forEach((dot, index) => {
-          dot.addEventListener("click", () => {
-            const maxScrollLeft = Math.max(
-              0,
-              carousel.scrollWidth - carousel.clientWidth,
-            );
-            const targetLeft =
-              dotCount <= 1 ? 0 : (maxScrollLeft * index) / (dotCount - 1);
-            carousel.scrollTo({ left: targetLeft, behavior: "smooth" });
-            pauseThenResume();
-          });
-        });
-
-        // start autoplay
         startAutoplay();
+        initModalGallery();
       }
 
       setInterval(() => {
