@@ -2212,6 +2212,10 @@
           el.addEventListener("click", () => {
             if (dragMoved) return; // ini bekas drag, bukan klik
             if (i === activeIndex) {
+              // pastikan sumber galeri untuk lightbox selalu galeri "Momen Pilihan",
+              // bukan sisa dari galeri lain (mis. "Kilas Balik") yang terakhir dibuka
+              modalImages = momenPilihanImages;
+              modalSource = "featured";
               openModal(activeIndex);
             } else {
               goTo(i);
