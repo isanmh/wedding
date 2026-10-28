@@ -93,14 +93,14 @@ const momentImages = [
 
 // Sumber gambar untuk carousel 3D "Momen Pilihan" (img/grt)
 const momenPilihanImages = [
-  { src: "img/lamaran/l03.webp", alt: "Momen Pilihan l03" },
-  { src: "img/lamaran/l1.webp", alt: "Momen Pilihan l1" },
-  { src: "img/lamaran/l2.webp", alt: "Momen Pilihan l2" },
-  { src: "img/lamaran/l3.webp", alt: "Momen Pilihan l3" },
-  { src: "img/lamaran/l4.webp", alt: "Momen Pilihan l4" },
+  // { src: "img/lamaran/l03.webp", alt: "Momen Pilihan l03" },
+  // { src: "img/lamaran/l1.webp", alt: "Momen Pilihan l1" },
+  // { src: "img/lamaran/l2.webp", alt: "Momen Pilihan l2" },
+  // { src: "img/lamaran/l3.webp", alt: "Momen Pilihan l3" },
+  // { src: "img/lamaran/l4.webp", alt: "Momen Pilihan l4" },
 
-  { src: "img/lamaran/l6.webp", alt: "Momen Pilihan l6" },
-  { src: "img/lamaran/l7.webp", alt: "Momen Pilihan l7" },
+  // { src: "img/lamaran/l6.webp", alt: "Momen Pilihan l6" },
+  // { src: "img/lamaran/l7.webp", alt: "Momen Pilihan l7" },
 
   { src: "img/grt/1.webp", alt: "Momen Pilihan 1" },
   { src: "img/grt/2.webp", alt: "Momen Pilihan 2" },
